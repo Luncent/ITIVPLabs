@@ -1,0 +1,35 @@
+header{
+    margin-bottom: 25px;
+}
+
+.tableBorder{
+    margin: 0 auto;
+    width: 95%; 
+    border: 2px solid black;
+    margin-bottom: 25px;
+}
+
+.formAdd{
+    border: 1px solid black;
+    padding: 5px;
+    margin: 0 auto;
+    margin-bottom: 25px;
+    width: 70%;
+    display: block;
+}
+
+.formAdd input, .formAdd button, .formAdd label{
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.formSearch{
+    width: 60%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+}
+
+.phpError{
+}
+
