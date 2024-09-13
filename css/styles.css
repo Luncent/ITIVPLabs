@@ -11,26 +11,78 @@ header{
 
 .formAdd{
     border: 1px solid black;
-    padding: 5px;
+    padding: 15px;
     margin: 0 auto;
     margin-bottom: 25px;
     width: 70%;
     display: block;
 }
 
-.formAdd input, .formAdd button, .formAdd label{
-    margin-bottom: 5px;
-    width: 100%;
+.formAdd input{
+    margin-bottom: 7px;
+    margin-left: 25px;
+    width:90%;
 }
+.formAdd select{
+    margin-bottom: 5px;
+    margin-left: 25px;
+}
+
+.formAdd label{
+    margin-bottom: 5px;
+    margin-left: 20px;
+    width: 80%;
+}
+
+.formAdd button{
+    width: 50%;
+}
+
+.buttonAdd{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+.addLabel{
+    font-size: 25px;
+    font-family: 'Times New Roman', Times, serif;
+    margin: 0;
+    padding: 0;
+}
+
+.addLabelcls{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.d-flex{}
 
 .formSearch{
     width: 60%;
     margin: 0 auto;
+    margin-bottom: 20px;
     display: flex;
     justify-content: center;
 }
 
 .phpError{
-    
+    margin-top: 5px;
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.phpError p{
+    margin: 0 auto;
+    color: red;
+    margin-bottom: 5px;
 }
 

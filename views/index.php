@@ -27,7 +27,7 @@
                         if(userEntered()){?>
                             <a class="navbar-brand"><?php echo $_SESSION["user"]->login ?></a>
                             <form action="../Controlers/exitFromAccount.php" method="get">
-                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                                <button class="btn btn-primary" type="submit">Выйти</button>
                             </form>
                         <?php 
                         }
@@ -78,11 +78,11 @@
                             <form action="../Controlers/deleteRowControler.php" method="post">
                                 <input type="hidden" name="action" value="delete">
                                 <input type="hidden" name="id" value="<?php echo $row->id?>">
-                                <button type="submit" class="btn-delete" name="delete">delete</button>
+                                <button type="submit" class="btn btn-primary" name="delete">delete</button>
                             </form>
                             </td>
                             <td>
-                                <button type="button" class="btn-edit" name="edit">edit</button>
+                                <button type="button" class="btn btn-primary" name="edit">edit</button>
                             </td>
                         </tr>
                     <?php }?>
@@ -90,8 +90,17 @@
             </tbody>
         </table>          
 
+        <form action="" method="get" class="formSearch">
+            <input type="hidden" name="action" value="search"> 
+            <input type="text" name="searchLine">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </form>
+
         <form action="../Controlers/addRowControler.php" method="post" class="formAdd">
             <input type="hidden" name="action" value="add">
+            <div class="addLabelcls">
+                <label class ="addLabel">Добавление расписания</label>
+            </div>
             <label for="options">День недели</label>
             <select name="dayOfWeek" id="options">
                 <option value="Понедельник">Понедельник</option>
@@ -113,14 +122,12 @@
             <input type="text" name="startTime">
             <label>Конец смены</label>
             <input type="text" name="endTime">
-            <button type="submit" class="btn btn-primary" name="add">Add</button>
+            <div class="buttonAdd">
+                <button type="submit" class="btn btn-primary" name="add">Add</button>
+            </div>
         </form>
     
-        <form action="" method="get" class="formSearch">
-            <input type="hidden" name="action" value="search"> 
-            <input type="text" name="searchLine">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
+        
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
