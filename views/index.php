@@ -1,73 +1,118 @@
+<?php
+    require_once "../Utils/sessionHadler.php";
+    safeSessionStart();
+    //echo var_dump($_SESSION);
+    if(isset($_SESSION["message"])){
+        $message = $_SESSION["message"];
+        unset($_SESSION["message"]);
+    }
+    require_once "../Controlers/getTableDataControler.php";
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Заголовок страницы</title>
+    <title>Учет рабочего времени</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
-    <div class="phpError">
-        <?php
-            include "../dataSource/crud.php";
-            include "../dataSource/userOperations.php"
-        ?>
-    </div>
-
     <header>
         <nav class="navbar bg-body-tertiary">
             <div class="container-fluid">
-                <!--<?php 
-                    global $user;
-                    echo $user->login;
-                ?>-->
-                <a class="navbar-brand">Вы не вошли в аккаунт</a>
-                <form class="d-flex" role="search">
-                    <!--<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
-                    <a href="../views/loginPage.php" class="btn btn-primary">Войти в аккаунт</a>
-                    <button class="btn btn-outline-success" type="submit">Выйти</button>
-                </form>
+                <div class="d-flex">
+                    <?php 
+                        if(userEntered()){?>
+                            <a class="navbar-brand"><?php echo $_SESSION["user"]->login ?></a>
+                            <form action="../Controlers/exitFromAccount.php" method="get">
+                                <button class="btn btn-outline-success" type="submit">Выйти</button>
+                            </form>
+                        <?php 
+                        }
+                        else{?>
+                            <a class="navbar-brand">Вы не вошли в аккаунт</a>
+                            <form class="d-flex" role="search">
+                                <!--<input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">-->
+                                <a href="../views/loginPage.php" class="btn btn-primary">Войти в аккаунт</a>
+                            </form>
+                        <?php 
+                        }
+                    ?>
+                    
+                    
+                </div>
             </div>
         </nav>
     </header>
+
+    <?php
+        if(isset($message)){
+            echo '<div class="phpError"><p>'. $message.'</p></div>';
+            unset($message);
+        }
+    ?>
 
     <main>
         <table class="table table-striped table-hover tableBorder">
             <thead class="th-dark">
                 <th>ID</th>
-                <th>Name</th>
-                <th>PhoneNumber</th>
+                <th>День недели</th>
+                <th>Начало смены</th>
+                <th>Конец смены</th>
+                <th>Отдел</th>
                 <th></th>
                 <th></th>
             </thead>
             <tbody>
-                <?php foreach($selectedRows as $row){?> 
-                <tr>
-                    <td><?php echo $row->id?></td>
-                    <td><?php echo $row->name?></td>
-                    <td><?php echo $row->phone?></td>
-                    <td>
-                        <form action="" method="post">
-                            <input type="hidden" name="action" value="delete">
-                            <input type="hidden" name="id" value="<?php echo $row->id?>">
-                            <button type="submit" class="btn-delete" name="delete">delete</button>
-                        </form>
-                    </td>
-                    <td>
-                        <button type="button" class="btn-edit" name="edit">edit</button>
-                    </td>
-                </tr>
-                <?php }?>
+                <?php if(isset($_SESSION["selectedRows"])){?>
+                    <?php foreach($_SESSION["selectedRows"] as $row){?> 
+                        <tr>
+                            <td><?php echo $row->id?></td>
+                            <td><?php echo $row->dayOfWeek?></td>
+                            <td><?php echo $row->startTime?></td>
+                            <td><?php echo $row->endTime?></td>
+                            <td><?php echo $row->departmentName?></td>
+                            <td>
+                            <form action="../Controlers/deleteRowControler.php" method="post">
+                                <input type="hidden" name="action" value="delete">
+                                <input type="hidden" name="id" value="<?php echo $row->id?>">
+                                <button type="submit" class="btn-delete" name="delete">delete</button>
+                            </form>
+                            </td>
+                            <td>
+                                <button type="button" class="btn-edit" name="edit">edit</button>
+                            </td>
+                        </tr>
+                    <?php }?>
+                <?php } ?>
             </tbody>
         </table>          
 
-        <form action="" method="post" class="formAdd">
+        <form action="../Controlers/addRowControler.php" method="post" class="formAdd">
             <input type="hidden" name="action" value="add">
-            <label>Name</label> 
-            <input type="text" name="name">
-            <label>Phone</label>
-            <input type="text" name="phone">
+            <label for="options">День недели</label>
+            <select name="dayOfWeek" id="options">
+                <option value="Понедельник">Понедельник</option>
+                <option value="Вторник">Вторник</option>
+                <option value="Среда">Среда</option>
+                <option value="Четверг">Четверг</option>
+                <option value="Пятница">Пятница</option>
+                <option value="Суббота">Суббота</option>
+                <option value="Воскресенье">Воскресенье</option>
+            </select>
+            <label for="options">Отдел</label>
+            <select name="departmentName" id="options">
+                <option value="Отдел кадров">Отдел кадров</option>
+                <option value="Плановый отдел">Плановый отдел</option>
+                <option value="Маркетинговый отдел">Маркетинговый отдел</option>
+                <option value="Финансовый отдел">Финансовый отдел</option>
+            </select>
+            <label>Начало смены</label>
+            <input type="text" name="startTime">
+            <label>Конец смены</label>
+            <input type="text" name="endTime">
             <button type="submit" class="btn btn-primary" name="add">Add</button>
         </form>
     

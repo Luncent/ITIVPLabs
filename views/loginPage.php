@@ -1,3 +1,7 @@
+<?php
+    require_once "../Utils/sessionHadler.php";
+    safeSessionStart();
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -8,13 +12,8 @@
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-<div class="phpError">
-        <?php
-            include "../dataSource/userOperations.php"
-        ?>
-</div>
 <div class="page">
-    <form action="" method="post" class="formLogin">
+    <form action="../Controlers/LoginControler.php" method="post" class="formLogin">
     <input type="hidden" name="action" value="login">
         <div class="mb-3">
             <input type="text" name="login" placeholder="Login">
@@ -22,15 +21,16 @@
         <div class="mb-3">
             <input type="text" name="password" placeholder="Password">
         </div>
-  <!--<div class="mb-3">
-    <label>Email</label>
-    <input type="text" name="email">
-  </div>
-  -->
         <div class="buttons">
             <button type="submit" class="btn btn-primary">Войти</button>
             <a href="../views/registrationPage.php" class="btn btn-primary">Регистрация</a>
         </div>
+        <?php
+            if(errorHappened()){
+                echo '<div class="phpError"><p>'. $_SESSION["message"].'</p></div>';
+                unset($_SESSION["message"]);
+            }
+        ?>
     </form>
 </div>
 </body>

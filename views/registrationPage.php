@@ -1,4 +1,7 @@
-
+<?php
+    require_once "../Utils/sessionHadler.php";
+    safeSessionStart();
+?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -9,13 +12,8 @@
     <link rel="stylesheet" href="../css/login.css">
 </head>
 <body>
-    <div class="phpError">
-        <?php
-            include "../dataSource/userOperations.php"
-        ?>
-    </div>
 <div class="page">
-    <form action="" method="post" class="formLogin">
+    <form action="../Controlers/registrateControler.php" method="post" class="formLogin">
         <input type="hidden" name="action" value="registrate">
         <div class="mb-3">
             <input type="text" name="login" placeholder="Login">
@@ -26,16 +24,65 @@
         <div class="mb-3">
             <input type="text" name="passwConfirmation" placeholder="Write password again">
         </div>
+        <div class="mb-3">
+            <label>Выберите роль</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="role" value="сотрудник" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+                Сотрудник
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="role" value="начальник отдела" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                Начальник отдела
+            </label>
+        </div>
+        <div class="mb-3">
+            <label>Выберите свой отдел</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="department" value="Отдел кадров" id="flexRadioDefault1">
+            <label class="form-check-label" for="flexRadioDefault1">
+                Отдел кадров
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="department" value="Плановый отдел" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                Плановый отдел
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="department" value="Маркетинговый отдел" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                Маркетинговый отдел
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="department" value="Финансовый отдел" id="flexRadioDefault2" checked>
+            <label class="form-check-label" for="flexRadioDefault2">
+                Финансовый отдел
+            </label>
+        </div>
+        
   <!--<div class="mb-3">
     <label>Email</label>
     <input type="text" name="email">
   </div>
-  -->
+  -->   
+        <?php
+            if(errorHappened()){
+                echo '<div class="phpError"><p>'. $_SESSION["message"].'</p></div>';
+                unset($_SESSION["message"]);
+            }
+        ?>
         <div class="buttons">
             <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-            <a href="../views/login.php" class="btn btn-primary">У меня есть аккаунт</a>
+            <a href="../views/loginPage.php" class="btn btn-primary">У меня есть аккаунт</a>
         </div>
-    </form>
+</form>
 </div>
 </body>
 </html>

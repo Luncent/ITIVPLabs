@@ -10,12 +10,12 @@
 .formLogin{
     border: 1px solid black;
     border-radius: 5px;
-    width: 40%;
+    width: 30%;
     margin: 0 auto;
     padding: 5px;
 }
 
-.formLogin input{
+.mb-3 input{
     width: 100%;
 }
 
@@ -31,5 +31,14 @@
 }
 
 .phpError{
+    margin-top: 5px;
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.phpError p{
+    margin: 0 auto;
+    color: red;
 }
