@@ -17,12 +17,16 @@
         return;
     }
 
-    if(!timesValid($startTime,$endTime)){
-        header("Location: ../views/index.php");
-        return;
+
+    if(!empty($start) && !empty($endTime)){
+        if(!timesValid($startTime,$endTime)){
+            header("Location: ../views/index.php");
+            return;
+        }
     }
 
-    $count = count(selectCertainRows($dayOfWeek,$departmentName));
+    $result = selectCertainRows($dayOfWeek,$departmentName);
+    $count = isset($result) ? count($result) : 0;
     if(!errorHappened()){
         if($count>0){
             addErrorMessage("Расписание для указанного дня уже есть");
