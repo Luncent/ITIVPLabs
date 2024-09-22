@@ -2,12 +2,6 @@
     require_once "../DBOperations/tableOperations.php";
     require_once "../Utils/sessionHadler.php";
     
-    //проверяем не произошла ли ошибка при подключении к бд
-    if(errorHappened()){
-        echo "erorr";
-        return;
-    }
-
     if(searching()){
         $searchParam = $_GET["searchLine"];
         if(!empty($searchParam)){

@@ -18,34 +18,6 @@ header{
     display: block;
 }
 
-.formAdd input{
-    margin-bottom: 7px;
-    margin-left: 25px;
-    width:90%;
-}
-.formAdd select{
-    margin-bottom: 5px;
-    margin-left: 25px;
-}
-
-.formAdd label{
-    margin-bottom: 5px;
-    margin-left: 20px;
-    width: 80%;
-}
-
-.formAdd button{
-    width: 50%;
-}
-
-.buttonAdd{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 5px;
-}
-
 .addLabel{
     font-size: 25px;
     font-family: 'Times New Roman', Times, serif;
@@ -71,6 +43,41 @@ header{
     justify-content: center;
 }
 
+.formDataContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.formDataContainer input{
+    margin-bottom: 7px;
+    margin-left: 25px;
+    width:90%;
+}
+.formDataContainer select{
+    margin-bottom: 5px;
+    margin-left: 25px;
+    width: 20%;
+}
+
+.formDataContainer label{
+    margin-bottom: 5px;
+    margin-left: 20px;
+    width: 80%;
+}
+
+.formDataContainer button{
+    width: 50%;
+}
+
+.buttonAdd{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 5px;
+}
+
 .phpError{
     margin-top: 5px;
     border: 2px solid red;
@@ -84,5 +91,9 @@ header{
     margin: 0 auto;
     color: red;
     margin-bottom: 5px;
+}
+
+.container-fluid{
+    justify-content: flex-end !important;
 }
 

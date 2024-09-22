@@ -43,7 +43,7 @@
             return $bool;
         }
         catch(Exception $ex){
-            echo $ex->getMessage();
+            addErrorMessage("Ошибка при добавлении пользователя ".$ex->getMessage());
         }
     }
 
@@ -67,6 +67,7 @@
 
     function getUserByLogin($login){
         try{
+            echo "<script>console.log('ещем пользователя');</script>";
             $conn = getConnection();
             $query = $conn->prepare("SELECT * FROM users WHERE login=?");
             $query->execute([$login]);

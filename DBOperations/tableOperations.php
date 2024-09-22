@@ -4,7 +4,7 @@
     function search($param){
         try{
             $conn = getConnection();
-            echo $param;
+            //echo $param;
             $query = $conn->prepare("SELECT * FROM schedule WHERE id= :param OR 
             startTime=:param OR endTime=:param OR departmentName=:param OR dayOfWeek=:param");
             $query->bindParam(":param", $param);

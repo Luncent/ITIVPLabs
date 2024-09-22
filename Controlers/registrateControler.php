@@ -33,11 +33,17 @@
         header("Location: ../views/registrationPage.php");
     }
     else if($user==="not found"){
+        echo "<script>console.log('пользователь не найден');</script>";
         insertUser($login,$password,$role,$department);
-        safeSessionStart();
-        $user=getUserByLogin($login);
-        $_SESSION["user"]=$user;
-        header("Location: ../views/index.php");
+        if(errorHappened()){
+            header("Location: ../views/registrationPage.php");
+        }
+        else{
+            safeSessionStart();
+            $user=getUserByLogin($login);
+            $_SESSION["user"]=$user;
+            header("Location: ../views/index.php");
+        }
     }
     else{
         addErrorMessage("Логин ".$user->login." занят");

@@ -1,11 +1,6 @@
 <?php 
     require_once "../Utils/sessionHadler.php";
     require_once "../DBOperations/tableOperations.php";
-
-    /*if(errorHappened()){
-        header("Location: ../views/index.php");
-        return;
-    }*/
     
     $dayOfWeek = $_POST["dayOfWeek"];
     $startTime = $_POST["startTime"];
@@ -17,8 +12,7 @@
         return;
     }
 
-
-    if(!empty($start) && !empty($endTime)){
+    if(!empty($startTime) && !empty($endTime)){
         if(!timesValid($startTime,$endTime)){
             header("Location: ../views/index.php");
             return;
@@ -55,7 +49,11 @@
             addErrorMessage("Допустимые форматы времени - HH:MM:SS или HH:MM");
             return false;
         }
-        if($start>$end){
+        // Создаем объекты DateTime
+        $startTime = DateTime::createFromFormat('H:i:s', $start) ?: DateTime::createFromFormat('H:i', $start);
+        $endTime = DateTime::createFromFormat('H:i:s', $end) ?: DateTime::createFromFormat('H:i', $end);
+        // Сравниваем время
+        if ($startTime > $endTime) {
             addErrorMessage("Начало смены не может быть позже ее окончания");
             return false;
         }
@@ -63,7 +61,16 @@
     }
 
     function isValidTime($time) {
-        // Регулярное выражение для проверки формата HH:MM:SS
-        return preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/', $time);
+        // Проверка формата hh:mm:ss
+        if (preg_match('/^(?:[01]?\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/', $time)) {
+            return true; // Формат hh:mm:ss
+        }
+    
+        // Проверка формата hh:mm
+        if (preg_match('/^(?:[01]?\d|2[0-3]):[0-5]\d$/', $time)) {
+            return true; // Формат hh:mm
+        }
+    
+        return false; // Не соответствует ни одному формату
     }
 ?>
