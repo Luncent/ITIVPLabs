@@ -1,5 +1,5 @@
 <?php 
-    require_once "../Utils/sessionHadler.php";
+    require_once "../Utils/MySessionHandler.php";
     
     
     function getConnection(){

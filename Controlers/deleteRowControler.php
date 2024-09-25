@@ -1,5 +1,5 @@
 <?php 
-    require_once "../Utils/sessionHadler.php";
+    require_once "../Utils/MySessionHandler.php";
     require_once "../DBOperations/tableOperations.php";
 
     if(MySessionHandler::errorHappened()){

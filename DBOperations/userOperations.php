@@ -1,17 +1,6 @@
 <?php
     require_once "pdo.php";
-    require_once "../Utils/sessionHadler.php";
-    /*$user;
-    
-    if($_SERVER["REQUEST_METHOD"]=="POST" && isset($_POST["action"])){
-        echo $_POST["action"];
-        if($_POST["action"]=="registrate"){
-            registrateUser();
-        }
-        if($_POST["action"]=="login"){
-            login();
-        }
-    }*/
+    require_once "../Utils/MySessionHandler.php";
 
     class UserDao{
 

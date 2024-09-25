@@ -1,5 +1,5 @@
 <?php 
-    require_once "../Utils/sessionHadler.php";
+    require_once "../Utils/MySessionHandler.php";
     require_once "../DBOperations/tableOperations.php";
     
     $dayOfWeek = $_POST["dayOfWeek"];
@@ -56,7 +56,8 @@
 
     function timesValid($start,$end){
         if(!isValidTime($start) || !isValidTime($end)){
-            MySessionHandler::addErrorMessage("Допустимые форматы времени - HH:MM:SS или HH:MM");
+            MySessionHandler::addErrorMessage("Введены неверные значения. Допустимые форматы времени - HH:MM:SS или HH:MM<br>
+                диапазон часов [0;23], диапазон минут [0;59],диапазон секунд [0;59],");
             return false;
         }
         // Создаем объекты DateTime

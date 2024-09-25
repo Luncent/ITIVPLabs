@@ -1,5 +1,5 @@
 <?php
-    require_once "../Utils/sessionHadler.php";
+    require_once "../Utils/MySessionHandler.php";
     MySessionHandler::safeSessionStart();
     if (session_status() === PHP_SESSION_ACTIVE) {
         $_SESSION = [];

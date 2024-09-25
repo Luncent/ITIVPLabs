@@ -1,5 +1,5 @@
 <?php
-    require_once "../Utils/sessionHadler.php";
+    require_once "../Utils/MySessionHandler.php";
     require_once "../DBOperations/userOperations.php";
     MySessionHandler::safeSessionStart();
 
@@ -14,7 +14,6 @@
     //проверка наличия пользователя в бд
     try{
         $users = UserDao::getUser($login,$password);
-        echo count($users);
         if(isset($users) && count($users)!=0){
             $_SESSION["user"]=$users[0];
             header("Location: ../views/index.php");

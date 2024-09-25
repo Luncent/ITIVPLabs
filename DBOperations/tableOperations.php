@@ -2,13 +2,31 @@
     require_once "pdo.php";
     
     class ScheduleDao{  
-        public static function search($param){
+        public static function aSearch($param){
             try{
                 $conn = getConnection();
                 //echo $param;
                 $query = $conn->prepare("SELECT * FROM schedule WHERE id= :param OR 
                 startTime=:param OR endTime=:param OR departmentName=:param OR dayOfWeek=:param");
                 $query->bindParam(":param", $param);
+                $query->execute();
+                $selectedRows = $query->fetchAll(PDO::FETCH_OBJ); 
+                return $selectedRows; 
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public static function uSearch($param,$otdel){
+            try{
+                $conn = getConnection();
+                //echo $param;
+                $query = $conn->prepare("SELECT * FROM schedule WHERE (id= :param OR 
+                    startTime=:param OR endTime=:param OR departmentName=:param OR dayOfWeek=:param) 
+                    AND departmentName=:otdel");
+                $query->bindParam(":param", $param);
+                $query->bindParam(":otdel", $otdel);
                 $query->execute();
                 $selectedRows = $query->fetchAll(PDO::FETCH_OBJ); 
                 return $selectedRows; 
@@ -33,11 +51,24 @@
             }
         }
 
-        public static function selectAllRows(){
+        public static function aSelectAllRows(){
             try{
                 $conn = getConnection();
                 $query = $conn->prepare("SELECT * FROM schedule");
                 $query->execute();
+                global $selectedObjs; 
+                return $selectedObjs = $query->fetchAll(PDO::FETCH_OBJ); 
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
+        }
+
+        public static function uSelectAllRows($department){
+            try{
+                $conn = getConnection();
+                $query = $conn->prepare("SELECT * FROM schedule WHERE departmentName=?");
+                $query->execute([$department]);
                 global $selectedObjs; 
                 return $selectedObjs = $query->fetchAll(PDO::FETCH_OBJ); 
             }
