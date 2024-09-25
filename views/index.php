@@ -1,6 +1,6 @@
 <?php
     require_once "../Utils/sessionHadler.php";
-    safeSessionStart();
+    MySessionHandler::safeSessionStart();
     //echo var_dump($_SESSION);
     require_once "../Controlers/getTableDataControler.php";
     if(isset($_SESSION["message"])){
@@ -25,7 +25,7 @@
             <div class="container-fluid">
                 <div class="d-flex">
                     <?php 
-                        if(userEntered()){?>
+                        if(MySessionHandler::userEntered()){?>
                             <a class="navbar-brand"><?php echo $_SESSION["user"]->login ?></a>
                             <form action="../Controlers/exitFromAccount.php" method="get">
                                 <button class="btn btn-primary" type="submit">Выйти</button>

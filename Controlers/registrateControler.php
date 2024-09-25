@@ -13,40 +13,35 @@
     $role = $_POST["role"];
     $department = $_POST["department"];
 
-    echo $login.$password.$passwConfirmation.$role.$department;
-
     if(empty($login) || empty($password) || empty($passwConfirmation)
         || empty($role) || empty($department)){
 
-        addErrorMessage("Заполните все поля");
+        MySessionHandler::addErrorMessage("Заполните все поля");
         header("Location: ../views/registrationPage.php");
         return;
     }
     if($password!=$passwConfirmation){
-        addErrorMessage("Пароли не совпадают");
+        MySessionHandler::addErrorMessage("Пароли не совпадают");
         header("Location: ../views/registrationPage.php");
         return;
     }
     
-    $user = getUserByLogin($login);
-    if(errorHappened()){
-        header("Location: ../views/registrationPage.php");
-    }
-    else if($user==="not found"){
-        echo "<script>console.log('пользователь не найден');</script>";
-        insertUser($login,$password,$role,$department);
-        if(errorHappened()){
-            header("Location: ../views/registrationPage.php");
-        }
-        else{
-            safeSessionStart();
-            $user=getUserByLogin($login);
+    try{
+        $user = UserDao::getUserByLogin($login);
+        if($user==="not found"){
+            UserDao::insertUser($login,$password,$role,$department);
+            
+            MySessionHandler::safeSessionStart();
+            $user=UserDao::getUserByLogin($login);
             $_SESSION["user"]=$user;
             header("Location: ../views/index.php");
         }
-    }
-    else{
-        addErrorMessage("Логин ".$user->login." занят");
+        else{
+            MySessionHandler::addErrorMessage("Логин ".$user->login." занят");
+            header("Location: ../views/registrationPage.php");
+        }
+    }catch(Exception $ex){
+        MySessionHandler::addErrorMessage("Ошибка во время регистрации: ".$ex->getMessage());
         header("Location: ../views/registrationPage.php");
     }
 ?>

@@ -1,6 +1,6 @@
 <?php
     require_once "../Utils/sessionHadler.php";
-    safeSessionStart();
+    MySessionHandler::safeSessionStart();
     if (session_status() === PHP_SESSION_ACTIVE) {
         $_SESSION = [];
         session_destroy();

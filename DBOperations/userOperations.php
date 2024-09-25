@@ -13,76 +13,50 @@
         }
     }*/
 
-    function registrateUser(){
-        $login = $_POST["login"];
-        $password = $_POST["password"];
-        $password2 = $_POST["passwConfirmation"];
-        $role = $_POST["role"];
-        $department = $_POST["department"];
-        echo $login." " . $password . " ".$password2;
-        
-        if(!insertUser($login,$password,$role,$department)){
-            echo "Пользователь ".$login." уже существует";
-        }
-        else{
-            $users = getUser($login,$password);
-            if(!empty($users)){
-                $user= $users[0];
-                var_dump($user);
-                header("Location: ../views/index.php");
-                exit();
-            }
-        }
-    }
+    class UserDao{
 
-    function insertUser($login, $password, $role, $department){
-        try{   
-            $conn = getConnection();
-            $query = $conn->prepare("INSERT INTO users(login,password,role,department) VALUES (?,?,?,?)");
-            $bool = $query->execute([$login,$password,$role,$department]); 
-            return $bool;
+        public static function insertUser($login, $password, $role, $department){
+            try{    
+                $conn = getConnection();
+                $query = $conn->prepare("INSERT INTO users(login,password,role,department) VALUES (?,?,?,?)");
+                $bool = $query->execute([$login,$password,$role,$department]); 
+                return $bool;
+            }
+            catch(Exception $ex){
+                throw $ex;
+            }
         }
-        catch(Exception $ex){
-            addErrorMessage("Ошибка при добавлении пользователя ".$ex->getMessage());
-        }
-    }
 
-    function getUser($login, $password){
-        try{
-            $conn = getConnection();
-            $query = $conn->prepare("SELECT * FROM users WHERE login=? AND password=?");
-            $query->execute([$login, $password]);
-            $users = $query->fetchAll(PDO::FETCH_OBJ);
-            if(empty($users)){
-                addErrorMessage("Неверное имя пользрователя или пароль");
+        public static function getUser($login, $password){
+            try{
+                $conn = getConnection();
+                $query = $conn->prepare("SELECT * FROM users WHERE login=? AND password=?");
+                $query->execute([$login, $password]);
+                $users = $query->fetchAll(PDO::FETCH_OBJ);
+                return $users;
             }
-            else{
-                return $users[0];
+            catch(Exception $ex){
+                throw $ex;
             }
         }
-        catch(Exception $ex){
-            addErrorMessage("Ошибка при выборке данных ".$ex->getMessage());
-        }
-    }
 
-    function getUserByLogin($login){
-        try{
-            echo "<script>console.log('ещем пользователя');</script>";
-            $conn = getConnection();
-            $query = $conn->prepare("SELECT * FROM users WHERE login=?");
-            $query->execute([$login]);
-            $users = $query->fetchAll(PDO::FETCH_OBJ);
-            if(empty($users)){
-                return "not found";
+        public static function getUserByLogin($login){
+            try{
+                $conn = getConnection();
+                $query = $conn->prepare("SELECT * FROM users WHERE login=?");
+                $query->execute([$login]);
+                $users = $query->fetchAll(PDO::FETCH_OBJ);
+                if(empty($users)){
+                    return "not found";
+                }
+                else{
+                    return $users[0];
+                }
             }
-            else{
-                return $users[0];
+            catch(Exception $ex){
+                throw $ex;
             }
         }
-        catch(Exception $ex){
-            addErrorMessage("Ошибка при выборке данных ".$ex->getMessage());
-        }
-    }
 
-    
+    }
 ?>

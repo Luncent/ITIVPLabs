@@ -1,6 +1,6 @@
 <?php
     require_once "../Utils/sessionHadler.php";
-    safeSessionStart();
+    MySessionHandler::safeSessionStart();
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -26,7 +26,7 @@
             <a href="../views/registrationPage.php" class="btn btn-primary">Регистрация</a>
         </div>
         <?php
-            if(errorHappened()){
+            if(MySessionHandler::errorHappened()){
                 echo '<div class="phpError"><p>'. $_SESSION["message"].'</p></div>';
                 unset($_SESSION["message"]);
             }

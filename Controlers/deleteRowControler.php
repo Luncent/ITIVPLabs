@@ -2,28 +2,30 @@
     require_once "../Utils/sessionHadler.php";
     require_once "../DBOperations/tableOperations.php";
 
-    if(errorHappened()){
+    if(MySessionHandler::errorHappened()){
         header("Location: ../views/index.php");
         return;
     }
     
     $id = $_POST["id"];
-    echo $id;
 
-    $deletedRows = delete($id);
-    if(errorHappened()){
+    try{
+        $deletedRows = ScheduleDao::delete($id);
+        //TODO считать количество удаленных строк чтоы обнаружить удалено 0 строк
+        if(isset($deletedRows) && ($deletedRows==0)){
+            MySessionHandler::addErrorMessage("Запись отсутствует в бд");
+        }
+        else{
+            MySessionHandler::addErrorMessage("Запись удалена");
+        }
+    }
+    catch(Exception $ex){
+        MySessionHandler::addErrorMessage("Ошибка при удалении расписания. ".$ex->getMessage());
+    }
+    finally{
         header("Location: ../views/index.php");
-        return;
     }
-    //TODO считать количество удаленных строк чтоы обнаружить удалено 0 строк
-    else if(isset($deletedRows) && ($deletedRows==0)){
-        addErrorMessage("Запись отсутствует в бд");
-        header("Location: ../views/index.php");
-        return;
-    }
-    else{
-        addErrorMessage("Запись удалена");
-    }
+    
     header("Location: ../views/index.php");
     return;
 ?>

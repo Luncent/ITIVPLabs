@@ -6,7 +6,8 @@
     $startTime = $_POST["startTime"];
     $endTime = $_POST["endTime"];
     $departmentName = $_POST["departmentName"];
-
+    
+    //валидация
     if(isEmpty($dayOfWeek,$startTime,$endTime,$departmentName)){
         header("Location: ../views/index.php");
         return;
@@ -18,27 +19,36 @@
             return;
         }
     }
+    //
 
-    $result = selectCertainRows($dayOfWeek,$departmentName);
-    $count = isset($result) ? count($result) : 0;
-    if(!errorHappened()){
+    //проверка наличия расписания и добавление
+    try{
+        $result = ScheduleDao::selectCertainRows($dayOfWeek,$departmentName);
+        $count = isset($result) ? count($result) : 0;
         if($count>0){
-            addErrorMessage("Расписание для указанного дня уже есть");
+            MySessionHandler::addErrorMessage("Расписание для указанного дня уже есть");
         }
         else{
-            add($dayOfWeek,$startTime,$endTime,$departmentName);
+            ScheduleDao::add($dayOfWeek,$startTime,$endTime,$departmentName);
+            MySessionHandler::addErrorMessage("Запись добавлена");
         }
     }
-    header("Location: ../views/index.php");
-    return;
+    catch(Exception $ex){
+        MySessionHandler::addErrorMessage("Ошибка при добавлении расписания. ".$ex->getMessage());
+    }
+    finally{
+        header("Location: ../views/index.php");
+    }
 
+
+    //functions---------------------
     function isEmpty($dayOfWeek,$startTime,$endTime,$departmentName){
         if(empty($dayOfWeek) || empty($departmentName)){
-            addErrorMessage("Отдел, день недели обязательные поля для заполнения");
+            MySessionHandler::addErrorMessage("Отдел, день недели обязательные поля для заполнения");
             return true;
         }
         if((empty($startTime) && !empty($endTime)) || ((!empty($startTime) && empty($endTime)))){
-            addErrorMessage("Или заполните оба временных поля, или оставьте их пустыми");
+            MySessionHandler::addErrorMessage("Или заполните оба временных поля, или оставьте их пустыми");
             return true;
         }
         return false;
@@ -46,7 +56,7 @@
 
     function timesValid($start,$end){
         if(!isValidTime($start) || !isValidTime($end)){
-            addErrorMessage("Допустимые форматы времени - HH:MM:SS или HH:MM");
+            MySessionHandler::addErrorMessage("Допустимые форматы времени - HH:MM:SS или HH:MM");
             return false;
         }
         // Создаем объекты DateTime
@@ -54,7 +64,7 @@
         $endTime = DateTime::createFromFormat('H:i:s', $end) ?: DateTime::createFromFormat('H:i', $end);
         // Сравниваем время
         if ($startTime > $endTime) {
-            addErrorMessage("Начало смены не может быть позже ее окончания");
+            MySessionHandler::addErrorMessage("Начало смены не может быть позже ее окончания");
             return false;
         }
         return true;
