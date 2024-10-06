@@ -6,11 +6,6 @@
                         if(MySessionHandler::userEntered()){?>
                             <a class="navbar-brand"><?php echo $_SESSION["user"]->login ?></a>
                             <a href="index.php" class="btn btn-primary">Главная страница</a>
-                            <a href="tasksPage.php" class="btn btn-primary">Задания</a>
-                            <?php 
-                             if($_SESSION["user"]->role=="admin"){?>
-                                <a href="departmentsPage.php" class="btn btn-primary">Справочник отделов</a>
-                            <?php }?>
                             <form action="../Controlers/exitFromAccount.php" method="get">
                                 <button class="btn btn-primary" type="submit">Выйти</button>
                             </form>

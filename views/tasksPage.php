@@ -5,8 +5,18 @@
         header("Location: ../views/loginPage.php");
         return;
     }
-    //echo var_dump($_SESSION);
-    require_once "../Controlers/getScheduleDataControler.php";
+    require_once "../Controlers/getTasksController.php";
+    if($_SESSION["user"]->role == "admin"){
+        GetTasksController::selectTasksAdmin();
+    }
+    if($_SESSION["user"]->role == "сотрудник"){
+        GetTasksController::selectTasksEmployee($_SESSION["user"]->department_id,
+         $_SESSION["user"]->id);
+    }
+    if($_SESSION["user"]->role == "начальник отдела"){
+        GetTasksController::selectTasksEmployer($_SESSION["user"]->id);
+    }
+
     if(isset($_SESSION["message"])){
         $message = $_SESSION["message"];
         unset($_SESSION["message"]);
@@ -36,20 +46,13 @@
     ?>
 <!--Table component-->
     <?php 
-        require_once "../views/Components/indexTableComponent.php"
+        require_once "../views/Components/tasksTable.php"
     ?>
-    
 
     <main>
-        <form action="" method="get" class="formSearch">
-            <input type="hidden" name="action" value="search"> 
-            <input type="text" name="searchLine">
-            <button type="submit" class="btn btn-primary">Search</button>
-        </form>
-
         <!--AddForm component-->
         <?php 
-            require_once "../views/Components/indexAddFormComponent.php"
+            require_once "../views/Components/tasksAddForm.php"
         ?>
     </main>
 

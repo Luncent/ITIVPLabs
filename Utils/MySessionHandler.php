@@ -24,5 +24,10 @@
         public static function userEntered(){
             return (isset($_SESSION["user"])); 
         }
+
+        public static function hasSpecialCharacters($string) {
+            // Регулярное выражение для проверки наличия специальных символов
+            return preg_match('/[^a-zA-Zа-яА-Я0-9 ]/u', $string);
+        }
     }
 ?>

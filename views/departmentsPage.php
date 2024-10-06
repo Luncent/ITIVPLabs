@@ -5,8 +5,12 @@
         header("Location: ../views/loginPage.php");
         return;
     }
+    if($_SESSION["user"]->role!="admin"){
+        header("Location: ../views/index.php");
+        return;
+    }
     //echo var_dump($_SESSION);
-    require_once "../Controlers/getScheduleDataControler.php";
+    require_once "../Controlers/getAllDepartmentsControler.php";
     if(isset($_SESSION["message"])){
         $message = $_SESSION["message"];
         unset($_SESSION["message"]);
@@ -25,7 +29,7 @@
 <body>
 <!--Header component-->
     <?php 
-        require_once "../views/Components/indexPageHeader.php"
+        require_once "Components/indexPageHeader.php";
     ?>
 <!--ErrorMessage component-->
     <?php
@@ -36,7 +40,7 @@
     ?>
 <!--Table component-->
     <?php 
-        require_once "../views/Components/indexTableComponent.php"
+        require_once "Components/departmentsTableComponent.php"
     ?>
     
 
@@ -49,7 +53,7 @@
 
         <!--AddForm component-->
         <?php 
-            require_once "../views/Components/indexAddFormComponent.php"
+            require_once "Components/departmentsAddFromComponent.php"
         ?>
     </main>
 

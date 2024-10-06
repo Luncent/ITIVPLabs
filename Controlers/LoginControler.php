@@ -1,6 +1,6 @@
 <?php
     require_once "../Utils/MySessionHandler.php";
-    require_once "../DBOperations/userOperations.php";
+    require_once "../Dao/UserDao.php";
     MySessionHandler::safeSessionStart();
 
     $login = $_POST["login"];

@@ -3,7 +3,7 @@
         return;
     }
 ?>
-<form action="../Controlers/addRowControler.php" method="post" class="formAdd">
+<form action="../Controlers/addScheduleControler.php" method="post" class="formAdd">
     <input type="hidden" name="action" value="add">
     <div class="addLabelcls">
         <label class ="addLabel">Добавление расписания</label>
@@ -19,18 +19,24 @@
             <option value="Суббота">Суббота</option>
             <option value="Воскресенье">Воскресенье</option>
         </select>  
-      <?php if($_SESSION["user"]->role=="admin"){ ?>
+    <?php if($_SESSION["user"]->role=="admin"){
+                require_once "../Controlers/getAllDepartmentsControler.php"; 
+        ?>
         <label for="options">Отдел</label>
-        <select name="departmentName" id="options">
-            <option value="Отдел кадров">Отдел кадров</option>
-            <option value="Плановый отдел">Плановый отдел</option>
-            <option value="Маркетинговый отдел">Маркетинговый отдел</option>
-            <option value="Финансовый отдел">Финансовый отдел</option>
+
+        <select name="department_id" id="department">
+            <?php if(isset($_SESSION["departments"])){?>
+                <?php foreach($_SESSION["departments"] as $department){?> 
+                    <option value=<?php echo $department->id ?> > <?php echo $department->name ?> </option>
+                <?php }?>
+            <?php } ?>
         </select>
-      <?php }?>
+    <?php 
+             unset($_SESSION["departments"]);
+          }?>
        
       <?php if($_SESSION["user"]->role=="начальник отдела"){ ?>
-        <input type="hidden" name="departmentName" value="<?php echo $_SESSION["user"]->department?>">
+        <input type="hidden" name="department_id" value="<?php echo $_SESSION["user"]->department_id?>">
       <?php }?>
         
 

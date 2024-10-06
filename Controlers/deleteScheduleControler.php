@@ -1,11 +1,6 @@
 <?php 
     require_once "../Utils/MySessionHandler.php";
-    require_once "../DBOperations/tableOperations.php";
-
-    if(MySessionHandler::errorHappened()){
-        header("Location: ../views/index.php");
-        return;
-    }
+    require_once "../Dao/ScheduleDao.php";
     
     $id = $_POST["id"];
 
@@ -22,10 +17,7 @@
     catch(Exception $ex){
         MySessionHandler::addErrorMessage("Ошибка при удалении расписания. ".$ex->getMessage());
     }
-    finally{
-        header("Location: ../views/index.php");
-    }
-    
+        
     header("Location: ../views/index.php");
     return;
 ?>

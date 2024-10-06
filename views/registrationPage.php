@@ -1,7 +1,10 @@
 <?php
     require_once "../Utils/MySessionHandler.php";
     MySessionHandler::safeSessionStart();
+    //выбираем все департаменты
+    require_once "../Controlers/getAllDepartmentsControler.php";
 ?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -39,39 +42,11 @@
                 Начальник отдела
             </label>
         </div>
-        <div class="mb-3">
-            <label>Выберите свой отдел</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="department" value="Отдел кадров" id="flexRadioDefault1">
-            <label class="form-check-label" for="flexRadioDefault1">
-                Отдел кадров
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="department" value="Плановый отдел" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
-                Плановый отдел
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="department" value="Маркетинговый отдел" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
-                Маркетинговый отдел
-            </label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="department" value="Финансовый отдел" id="flexRadioDefault2" checked>
-            <label class="form-check-label" for="flexRadioDefault2">
-                Финансовый отдел
-            </label>
-        </div>
-        
-  <!--<div class="mb-3">
-    <label>Email</label>
-    <input type="text" name="email">
-  </div>
-  -->   
+        <!--Department component-->
+        <?php 
+            require_once "../views/Components/registrationPageDepartmentsComponent.php"
+        ?>
+
         <?php
             if(MySessionHandler::errorHappened()){
                 echo '<div class="phpError"><p>'. $_SESSION["message"].'</p></div>';
@@ -86,3 +61,7 @@
 </div>
 </body>
 </html>
+
+<?php
+    unset($_SESSION["departments"]);
+?>

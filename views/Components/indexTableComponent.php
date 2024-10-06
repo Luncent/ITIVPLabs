@@ -1,6 +1,6 @@
 <?php 
-    TableDataController::selectData($_SESSION["user"]->department);
-    $isUser = $_SESSION["user"]->role == "сотрудник";
+    GetScheduleDataController::selectData($_SESSION["user"]->department_id);
+    $isEmployee = $_SESSION["user"]->role == "сотрудник" ? true : false;
 ?>
 
 <table class="table table-striped table-hover tableBorder">
@@ -10,7 +10,7 @@
         <th>Начало смены</th>
         <th>Конец смены</th>
         <th>Отдел</th>
-      <?php if(!$isUser){ ?>
+      <?php if(!$isEmployee){ ?>
         <th></th>
         <th></th>
       <?php }?>
@@ -23,10 +23,10 @@
                     <td><?php echo $row->dayOfWeek?></td>
                     <td><?php echo $row->startTime?></td>
                     <td><?php echo $row->endTime?></td>
-                    <td><?php echo $row->departmentName?></td>
-                  <?php if(!$isUser){ ?>
+                    <td><?php echo $row->department?></td>
+                  <?php if(!$isEmployee){ ?>
                     <td>
-                        <form action="../Controlers/deleteRowControler.php" method="post">
+                        <form action="../Controlers/deleteScheduleControler.php" method="post">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?php echo $row->id?>">
                             <button type="submit" class="btn btn-primary" name="delete">delete</button>

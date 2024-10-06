@@ -1,14 +1,13 @@
 <?php 
     require_once "../Utils/MySessionHandler.php";
-    require_once "../DBOperations/tableOperations.php";
+    require_once "../Dao/ScheduleDao.php";
     
     $dayOfWeek = $_POST["dayOfWeek"];
     $startTime = $_POST["startTime"];
     $endTime = $_POST["endTime"];
-    $departmentName = $_POST["departmentName"];
+    $department_id = $_POST["department_id"];
     
-    //валидация
-    if(isEmpty($dayOfWeek,$startTime,$endTime,$departmentName)){
+    if(isEmpty($dayOfWeek,$startTime,$endTime,$department_id)){
         header("Location: ../views/index.php");
         return;
     }
@@ -19,17 +18,16 @@
             return;
         }
     }
-    //
 
     //проверка наличия расписания и добавление
     try{
-        $result = ScheduleDao::selectCertainRows($dayOfWeek,$departmentName);
+        $result = ScheduleDao::selectCertainRows($dayOfWeek,$department_id);
         $count = isset($result) ? count($result) : 0;
         if($count>0){
             MySessionHandler::addErrorMessage("Расписание для указанного дня уже есть");
         }
         else{
-            ScheduleDao::add($dayOfWeek,$startTime,$endTime,$departmentName);
+            ScheduleDao::add($dayOfWeek,$startTime,$endTime,$department_id);
             MySessionHandler::addErrorMessage("Запись добавлена");
         }
     }
@@ -42,8 +40,8 @@
 
 
     //functions---------------------
-    function isEmpty($dayOfWeek,$startTime,$endTime,$departmentName){
-        if(empty($dayOfWeek) || empty($departmentName)){
+    function isEmpty($dayOfWeek,$startTime,$endTime,$department_id){
+        if(empty($dayOfWeek) || empty($department_id)){
             MySessionHandler::addErrorMessage("Отдел, день недели обязательные поля для заполнения");
             return true;
         }
@@ -54,6 +52,7 @@
         return false;
     }
 
+    //валидация
     function timesValid($start,$end){
         if(!isValidTime($start) || !isValidTime($end)){
             MySessionHandler::addErrorMessage("Введены неверные значения. Допустимые форматы времени - HH:MM:SS или HH:MM<br>
