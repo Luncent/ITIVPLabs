@@ -33,7 +33,12 @@
                         </form>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" name="edit">edit</button>
+                        <button type="button" class="btn btn-primary openModal"
+                        data-id="<?php echo $row->id?>"
+                        data-dayOfWeek="<?php echo $row->dayOfWeek?>"
+                        data-startTime="<?php echo $row->startTime?>"
+                        data-endTime="<?php echo $row->endTime?>"
+                        data-department="<?php echo $row->department?>">edit</button>
                     </td>
                   <?php }?>
                 </tr>

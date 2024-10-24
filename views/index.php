@@ -38,7 +38,26 @@
     <?php 
         require_once "../views/Components/indexTableComponent.php"
     ?>
-    
+
+    <div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="../Controlers/UpdateSchedule.php" method="post">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Изменение расписания</h5>
+            <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="userInfo">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal" id="closeModal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+        </form>
+    </div>
+    </div>
 
     <main>
         <form action="" method="get" class="formSearch">
@@ -53,6 +72,7 @@
         ?>
     </main>
 
+    <script src="../js/editShedule.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>

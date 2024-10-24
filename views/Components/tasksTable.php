@@ -36,6 +36,26 @@
 <?php 
     if($_SESSION["user"]->role == "начальник отдела"){
 ?>
+
+<div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="../Controlers/UpdateTaskDescription.php" method="post">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Изменение описания задания</h5>
+            <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="userInfo">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal" id="closeModal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+        </form>
+    </div>
+</div>
 <table class="table table-striped table-hover tableBorder">
     <thead class="th-dark">
         <th>ID</th>
@@ -47,6 +67,7 @@
         <th>Статус</th>
         <th>Время создания</th>
         <th>Последнее обновление</th>
+        <th></th>
     </thead>
     <tbody>
         <?php if(isset($_SESSION["department_my_employerTasks"])){?>
@@ -61,16 +82,42 @@
                     <td><?php echo $task->status?></td>
                     <td><?php echo $task->created_at?></td>
                     <td><?php echo $task->updated_at?></td>
+                    <td>
+                        <button type="button" class="btn btn-primary openModal"
+                        data-id="<?php echo $task->id?>"
+                        data-title="<?php echo $task->title?>"
+                        data-description="<?php echo $task->description?>">Изменить</button>
+                    </td>
                 </tr>
             <?php }?>
         <?php } ?>
     </tbody>
-</table>       
+</table>  
+<script src="../js/editTaskDescription.js"></script>     
 <?php } ?>
 
 <?php 
     if($_SESSION["user"]->role == "сотрудник"){
 ?>
+<div class="modal" id="myModal" tabindex="-1">
+    <div class="modal-dialog">
+        <form action="../Controlers/updateTaskStatus.php" method="post">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Изменение статуса задания</h5>
+            <button type="button" class="btn-close closeModal" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="userInfo">
+            
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal" id="closeModal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+        </div>
+        </form>
+    </div>
+</div>
 <table class="table table-striped table-hover tableBorder">
     <thead class="th-dark">
         <th>ID</th>
@@ -133,16 +180,17 @@
                     <td><?php echo $task->assignee_login?></td>
                     <td><?php echo $task->created_at?></td>
                     <td><?php echo $task->updated_at?></td>
-                <form action="../Controlers/updateTaskStatus.php" method="post">
-                    <input type="hidden" name="taskId" value="<?php echo $task->id?>">
-                    <td><textarea type="text" name="status" ><?php echo $task->status?></textarea></td>
+                    <td><textarea rows="3" type="text" name="status" ><?php echo $task->status?></textarea></td>
                     <td>
-                        <button type="submit" class="btn btn-primary" name="изменить">Изменить</button>
+                        <button type="button" class="btn btn-primary openModal"
+                        data-id="<?php echo $task->id?>"
+                        data-title="<?php echo $task->title?>"
+                        data-status="<?php echo $task->status?>">Изменить</button>
                     </td>
-                </form>
                 </tr>
             <?php }?>
         <?php } ?>
     </tbody>
 </table>
+<script src="../js/editTaskStatus.js"></script>  
 <?php } ?>

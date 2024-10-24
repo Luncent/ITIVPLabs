@@ -18,6 +18,15 @@ class TaskDAO {
         return $stmt->execute([$status, $taskId]);
     }
 
+    public static function updateTaskDescription($taskId, $description) {
+        $stmt = getConnection()->prepare("
+            UPDATE tasks 
+            SET description = ?, updated_at = NOW() 
+            WHERE id = ?
+        ");
+        return $stmt->execute([$description, $taskId]);
+    }
+
     public static function assignTaskToUser($taskId, $userId) {
         $stmt = getConnection()->prepare("
             UPDATE tasks 
@@ -137,53 +146,4 @@ public static function getTasksByTitle($title, $department_id) {
         $stmt->execute([$created_by]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
-
-    /* Чтение задания по ID
-    public static function getTaskById($id) {
-        $stmt = getConnection()->prepare("SELECT * FROM tasks WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch(PDO::FETCH_OBJ);
-    }
-
-    // 3Выборка заданий по отделу, которые еще никто не взял
-    public static function getTasksByDepartmentWithoutAssignee($department_id) {
-        $stmt = getConnection()->prepare("SELECT * FROM tasks WHERE department_id = ? AND assigned_to IS NULL");
-        $stmt->execute([$department_id]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-     // Выборка всех заданий
-     public static function getAllTasks() {
-        $stmt = getConnection()->prepare("SELECT * FROM tasks");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    // 2Выборка заданий по назначенному пользователю
-    public static function getTasksByAssignedUser($assigned_to) {
-        $stmt = getConnection()->prepare("SELECT * FROM tasks WHERE assigned_to = ?");
-        $stmt->execute([$assigned_to]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }
-
-    // 1Выборка заданий по создателю
-    public static function getTasksByCreator($created_by) {
-        $stmt = getConnection()->prepare("SELECT * FROM tasks WHERE created_by = ?");
-        $stmt->execute([$created_by]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }*/
-
-
-
-     // Выборка заданий по отделу, исключая задания по указанному создателю или исполнителю
-    /* public function getTasksByDepartmentExcludingUser($department_id, $excluded_user_id) {
-        $stmt = getConnection()->prepare("
-            SELECT * FROM tasks 
-            WHERE department_id = ? 
-            AND created_by <> ? 
-            AND assigned_to <> ?
-        ");
-        $stmt->execute([$department_id, $excluded_user_id, $excluded_user_id]);
-        return $stmt->fetchAll(PDO::FETCH_OBJ);
-    }*/
 }

@@ -3,12 +3,12 @@ require_once "../Utils/MySessionHandler.php";
 require_once "../Dao/TasksDao.php";
 require_once "../Utils/InputValidator.php";
 
-if(empty($_POST["status"])){
+if(empty($_POST["description"])){
     MySessionHandler::addErrorMessage("Ошибка при обновлении: присутствует пустое поле");
     header("Location: ../views/tasksPage.php");
     return;
 }
-if(InputValidator::correctDescription($_POST["status"])){
+if(InputValidator::correctDescription($_POST["description"])){
     MySessionHandler::addErrorMessage("Использованы недопустимые символы");
     header("Location: ../views/tasksPage.php");
     return;
@@ -16,9 +16,9 @@ if(InputValidator::correctDescription($_POST["status"])){
 //проверка наличия расписания и обновление
 try{
     $taskId = $_POST["taskId"];
-    $status = $_POST["status"];
+    $description = $_POST["description"];
     
-    TaskDAO::updateTaskStatus($taskId, $status);
+    TaskDAO::updateTaskDescription($taskId, $description);
     MySessionHandler::addErrorMessage("Запись обновлена");
 }
 catch(Exception $ex){

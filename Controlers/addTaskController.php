@@ -1,6 +1,7 @@
 <?php 
     require_once "../Utils/MySessionHandler.php";
     require_once "../Dao/TasksDao.php";
+    require_once "../Utils/InputValidator.php";
     
     $title = $_POST["title"];
     $description = $_POST["description"];
@@ -12,8 +13,8 @@
         header("Location: ../views/tasksPage.php");
         return;
     }
-    if(MySessionHandler::hasSpecialCharacters($title) ||
-    MySessionHandler::hasSpecialCharacters($description)){
+    if(InputValidator::hasSpecialCharacters($title) ||
+    InputValidator::correctDescription($description)){
         MySessionHandler::addErrorMessage("Использованы недопустимые символы");
         header("Location: ../views/tasksPage.php");
         return;

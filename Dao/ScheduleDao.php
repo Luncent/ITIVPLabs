@@ -9,6 +9,21 @@
             return $query->fetchAll(PDO::FETCH_OBJ);
         }
 
+        public static function update($id,$day,$startTime,$endTime){
+            $conn = getConnection();
+            $query = $conn->prepare(
+            "UPDATE schedule
+            SET startTime = :start,
+                endTime = :end,
+                dayOfWeek =:day
+            WHERE id = :ID ");
+            $query->bindParam(":start",$startTime);
+            $query->bindParam(":end",$endTime);
+            $query->bindParam(":day",$day);
+            $query->bindParam(":ID",$id);
+            return $query->execute();
+        }
+
         private static function getSearchQuery($conn, $param, $department_id){
             //admin
             if(!isset($department_id) || $department_id=="admin"){

@@ -16,7 +16,6 @@
     if($_SESSION["user"]->role == "начальник отдела"){
         GetTasksController::selectTasksEmployer($_SESSION["user"]->id);
     }
-
     if(isset($_SESSION["message"])){
         $message = $_SESSION["message"];
         unset($_SESSION["message"]);
@@ -33,6 +32,7 @@
     <link rel="stylesheet" href="../css/styles.css">
 </head>
 <body>
+
 <!--Header component-->
     <?php 
         require_once "../views/Components/indexPageHeader.php"
