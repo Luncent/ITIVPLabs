@@ -32,7 +32,7 @@
                  dayOfWeek, departments.name AS department, department_id
                  FROM schedule
                  JOIN departments ON department_id = departments.id
-                 WHERE (schedule.id CONCAT('%', :param, '%')) OR (startTime LIKE CONCAT('%', :param, '%')) 
+                 WHERE (schedule.id LIKE CONCAT('%', :param, '%')) OR (startTime LIKE CONCAT('%', :param, '%')) 
                  OR (endTime LIKE CONCAT('%', :param, '%')) OR (departments.name LIKE CONCAT('%', :param, '%'))
                  OR (dayOfWeek LIKE CONCAT('%', :param, '%'))");
 
@@ -56,9 +56,8 @@
             }
         }
 
-        public static function delete(){
+        public static function delete($id){
             $conn = getConnection();
-            $id = $_POST["id"];
             //echo "  ".$id;
             $query = $conn->prepare("DELETE FROM schedule WHERE id=?");
             $query->execute([$id]);

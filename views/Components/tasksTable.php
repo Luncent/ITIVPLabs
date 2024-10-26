@@ -75,7 +75,7 @@
                 <tr>
                     <td><?php echo $task->id?></td>
                     <td><?php echo $task->title?></td>
-                    <td><?php echo $task->description?></td>
+                    <td><textarea readonly rows="3" type="text" name="descruption" ><?php echo $task->description?></textarea></td>
                     <td><?php echo $task->department_name?></td>
                     <td><?php echo $task->creator_login?></td>
                     <td><?php echo $task->assignee_login?></td>
@@ -180,7 +180,7 @@
                     <td><?php echo $task->assignee_login?></td>
                     <td><?php echo $task->created_at?></td>
                     <td><?php echo $task->updated_at?></td>
-                    <td><textarea rows="3" type="text" name="status" ><?php echo $task->status?></textarea></td>
+                    <td><textarea readonly rows="3" type="text" name="status" ><?php echo $task->status?></textarea></td>
                     <td>
                         <button type="button" class="btn btn-primary openModal"
                         data-id="<?php echo $task->id?>"

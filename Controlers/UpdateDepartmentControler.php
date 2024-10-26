@@ -2,7 +2,7 @@
     require_once "../Utils/MySessionHandler.php";
     require_once "../Dao/DepartmentsDao.php";
     
-    if(empty($_POST["departmentName"])){
+    if(empty(trim($_POST["departmentName"]))){
         MySessionHandler::addErrorMessage("Ошибка при обновлении: присутствует пустое поле");
         header("Location: ../views/departmentsPage.php");
         return;
@@ -12,9 +12,14 @@
         header("Location: ../views/departmentsPage.php");
         return;
     }
+    if(strlen(trim($_POST["departmentName"]))>30){
+        MySessionHandler::addErrorMessage("Длина превышает 30 символов");
+        header("Location: ../views/departmentsPage.php");
+        return;
+    }
     //проверка наличия расписания и обновление
     try{
-        $departmentName = $_POST["departmentName"];
+        $departmentName = trim($_POST["departmentName"]);
         $dep_id = $_POST["id"];
 
         //если меняется имя на тоже самое

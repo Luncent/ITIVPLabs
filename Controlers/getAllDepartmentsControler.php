@@ -3,7 +3,7 @@
     require_once "../Dao/DepartmentsDao.php";
     
     try{
-        if(!empty($_GET["searchLine"])){
+        if(isset($_GET["searchLine"]) && !empty(trim($_GET["searchLine"]))){
             $selectedRows =  DepartmentsDao::partialSearch($_GET["searchLine"]);
             $_SESSION["departments"]=$selectedRows;
         }

@@ -3,7 +3,7 @@ require_once "../Utils/MySessionHandler.php";
 require_once "../Dao/TasksDao.php";
 require_once "../Utils/InputValidator.php";
 
-if(empty($_POST["description"])){
+if(empty(trim($_POST["description"]))){
     MySessionHandler::addErrorMessage("Ошибка при обновлении: присутствует пустое поле");
     header("Location: ../views/tasksPage.php");
     return;
@@ -18,7 +18,7 @@ try{
     $taskId = $_POST["taskId"];
     $description = $_POST["description"];
     
-    TaskDAO::updateTaskDescription($taskId, $description);
+    TaskDAO::updateTaskDescription($taskId, trim($description));
     MySessionHandler::addErrorMessage("Запись обновлена");
 }
 catch(Exception $ex){

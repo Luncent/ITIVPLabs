@@ -2,6 +2,7 @@
     require_once "../Utils/MySessionHandler.php";
     require_once "../Dao/UserDao.php";
     require_once "../Dao/DepartmentsDao.php";
+    require_once "../Utils/InputValidator.php";
 
     $login = $_POST["login"];
     $password = $_POST["password"];
@@ -9,22 +10,15 @@
     $role = $_POST["role"];
     $department_id = $_POST["department_id"];
 
-    /*echo "Логин: " . htmlspecialchars($login) . "<br>";
-    echo "Пароль: " . htmlspecialchars($password) . "<br>";
-    echo "Подтверждение пароля: " . htmlspecialchars($passwConfirmation) . "<br>";
-    echo "Роль: " . htmlspecialchars($role) . "<br>";
-    echo "Департамент: " . htmlspecialchars($department_id) . "<br>";
-    die;*/
-
-    if(empty($login) || empty($password) || empty($passwConfirmation)
-        || empty($role) || empty($department_id)){
+    if(empty(trim($login)) || empty(trim($password)) || empty(trim($passwConfirmation))
+        || empty(trim($role)) || empty(trim($department_id))){
 
         MySessionHandler::addErrorMessage("Заполните все поля");
         header("Location: ../views/registrationPage.php");
         return;
     }
-    if(MySessionHandler::hasSpecialCharacters($login) || MySessionHandler::hasSpecialCharacters($password)){
-        MySessionHandler::addErrorMessage("Использование спец-символов запрещено");
+    if(InputValidator::isUsernameValid($login) || InputValidator::isUserPasswordValid($password)){
+        MySessionHandler::addErrorMessage("Использованы запрещенные символы");
         header("Location: ../views/registrationPage.php");
         return;
     }

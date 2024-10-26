@@ -8,6 +8,14 @@
             return preg_match('/[^a-zA-Zа-яА-Я0-9 ]/u', $string);
         }
 
+        public static function isUsernameValid($string) {
+            return preg_match('/[^a-zA-Zа-яА-Я]/u', $string);
+        }
+
+        public static function isUserPasswordValid($string) {
+            return preg_match('/[^a-zA-Zа-яА-Я0-9]/u', $string);
+        }
+
             //functions---------------------
         public static function isEmpty($dayOfWeek,$startTime,$endTime,$department_id){
             if(empty($dayOfWeek) || empty($department_id)){

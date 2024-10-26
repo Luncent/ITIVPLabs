@@ -40,7 +40,8 @@
             $conn = getConnection();
             $stmt = $conn->prepare("DELETE FROM departments WHERE id = :id");
             $stmt->bindParam(':id', $id);
-            return $stmt->execute();
+            $affectedRows = $stmt->rowCount();
+            return $affectedRows;
         }
     
         // Поиск департамента по имени

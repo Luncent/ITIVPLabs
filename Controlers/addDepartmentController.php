@@ -2,7 +2,7 @@
     require_once "../Utils/MySessionHandler.php";
     require_once "../Dao/DepartmentsDao.php";
     
-    $departmentName = $_POST["departmentName"];
+    $departmentName = trim($_POST["departmentName"]);
 
     if(empty($departmentName)){
         MySessionHandler::addErrorMessage("Заполните поля");
@@ -11,6 +11,11 @@
     }
     if(MySessionHandler::hasSpecialCharacters($departmentName)){
         MySessionHandler::addErrorMessage("Использованы недопустимые символы");
+        header("Location: ../views/departmentsPage.php");
+        return;
+    }
+    if(strlen($departmentName)>30){
+        MySessionHandler::addErrorMessage("Длина превышает 30 символов");
         header("Location: ../views/departmentsPage.php");
         return;
     }

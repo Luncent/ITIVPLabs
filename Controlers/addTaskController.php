@@ -8,7 +8,7 @@
     $department_id = $_POST["department_id"];
     $created_by = $_POST["created_by"];
 
-    if(empty($title) || empty($description)){
+    if(empty(trim($title)) || empty(trim($description))){
         MySessionHandler::addErrorMessage("Заполните поля");
         header("Location: ../views/tasksPage.php");
         return;
@@ -20,13 +20,13 @@
         return;
     }
     try{
-        $result = TaskDAO::getTasksByTitle($title, $department_id);
+        $result = TaskDAO::getTasksByTitle(trim($title), $department_id);
         $count = isset($result) ? count($result) : 0;
         if($count>0){
             MySessionHandler::addErrorMessage("Задание с таким названием уже существует");
         }
         else{
-            TaskDAO::createTask($title, $description, $department_id, $created_by);
+            TaskDAO::createTask(trim($title), $description, $department_id, $created_by);
             MySessionHandler::addErrorMessage("Запись добавлена");
         }
     }

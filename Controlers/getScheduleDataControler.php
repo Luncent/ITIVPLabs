@@ -9,15 +9,10 @@ class GetScheduleDataController{
             return;
         }
         try{
-            if(self::searching()){
-                $searchParam = $_GET["searchLine"];
-                if(!empty($searchParam)){
-                    $selectedRows =  ScheduleDao::search($searchParam,$department_id);
-                    $_SESSION["selectedRows"]=$selectedRows;
-                }
-                else{
-                    self::selectAll($department_id);
-                }
+            $searchParam = isset($_GET["searchLine"])?trim($_GET["searchLine"]):"";
+            if(!empty($searchParam)){
+                $selectedRows =  ScheduleDao::search($searchParam,$department_id);
+                $_SESSION["selectedRows"]=$selectedRows;
             }
             else{
                 self::selectAll($department_id);
@@ -26,7 +21,8 @@ class GetScheduleDataController{
             MySessionHandler::addErrorMessage("Ошибка при выборке данных. ".$ex->getMessage());
         }
     }
-
+    
+    //TODO delete
     //functions ------------------------------------------------------------
     public static function searching(){
         return isset($_GET["action"]) && $_GET["action"]=="search";
