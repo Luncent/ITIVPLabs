@@ -155,6 +155,21 @@
     </tbody>
 </table>
 
+<?php 
+require_once "../Controlers/usersController.php";
+$managerNames = UsersController::getManagers($_SESSION["user"]->department_id)
+?>
+
+<form action="" method="get" class="formSearch">
+    <select class="form-control" name="managerName" id="options">
+        <?php foreach($managerNames as $name){?>
+            <option value=<?php echo $name?>><?php echo $name?></option>
+        <?php }?>
+            <option value="">Выбрать всех</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Поиск</button>
+</form>
+
 <table class="table table-striped table-hover tableBorder">
     <thead class="th-dark">
         <th>ID</th>

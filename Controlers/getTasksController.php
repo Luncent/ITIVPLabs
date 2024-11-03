@@ -6,7 +6,14 @@ class GetTasksController{
 
     public static function selectTasksEmployee($department_id,$employee_id){
         try{
-            $_SESSION["department_waiting_tasks"]=TaskDAO::getTasksByDepartmentWithoutAssignee($department_id);
+            $manager = isset($_GET["managerName"]) && !empty($_GET["managerName"]) ? $_GET["managerName"] : null;
+            if(isset($manager)){
+                TaskDAO::trackTaskSearch($manager,$employee_id);
+                $_SESSION["department_waiting_tasks"]=TaskDAO::searchTasks($manager);
+            }
+            else{
+                $_SESSION["department_waiting_tasks"]=TaskDAO::getTasksByDepartmentWithoutAssignee($department_id,$employee_id);
+            }
             $_SESSION["department_my_employeeTasks"]=TaskDAO::getTasksByAssignedUser($employee_id);
         }catch(Exception $ex){
             MySessionHandler::addErrorMessage("Ошибка при выборке данных. ".$ex->getMessage());

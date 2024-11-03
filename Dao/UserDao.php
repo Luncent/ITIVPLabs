@@ -19,6 +19,14 @@
             return $users;
         }
 
+        public static function getManagers($department_id){
+            $conn = getConnection();
+            $query = $conn->prepare("SELECT login FROM users WHERE department_id=? AND role='начальник отдела'");
+            $query->execute([$department_id]);
+            $users = $query->fetchAll(PDO::FETCH_COLUMN);
+            return $users;
+        } 
+
         public static function getUserByLogin($login){
             $conn = getConnection();
             $query = $conn->prepare("SELECT * FROM users WHERE login=?");
