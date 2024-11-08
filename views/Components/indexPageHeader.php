@@ -10,6 +10,7 @@
                             <?php 
                              if($_SESSION["user"]->role=="admin"){?>
                                 <a href="departmentsPage.php" class="btn btn-primary">Справочник отделов</a>
+                                <a href="CoefficientsPage.php" class="btn btn-primary">Коэффициенты</a>
                             <?php }?>
                             <form action="../Controlers/exitFromAccount.php" method="get">
                                 <button class="btn btn-primary" type="submit">Выйти</button>

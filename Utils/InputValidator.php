@@ -16,7 +16,17 @@
             return preg_match('/[^a-zA-Zа-яА-Я0-9]/u', $string);
         }
 
-            //functions---------------------
+        public static function validateDecimal($value) {
+            if (filter_var($value, FILTER_VALIDATE_FLOAT) === false) {
+                return false;
+            }
+
+            if (preg_match('/^-?\d{1,3}(\.\d{1,2})?$/', $value)) {
+                return true;
+            }
+            return false;
+        }
+
         public static function isEmpty($dayOfWeek,$startTime,$endTime,$department_id){
             if(empty($dayOfWeek) || empty($department_id)){
                 MySessionHandler::addErrorMessage("Отдел, день недели обязательные поля для заполнения");

@@ -82,60 +82,69 @@ class TaskDAO {
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    public static function searchTasks($creatorName) {
-        $stmt = getConnection()->prepare("
-            SELECT t.*, 
+    public static function searchTasks($department_id,$creatorName, $title, $descr) {
+        $query = "SELECT t.*, 
                    u1.login AS creator_login, 
                    d.name AS department_name 
-            FROM tasks t
-            LEFT JOIN users u1 ON t.created_by = u1.id
-            LEFT JOIN departments d ON t.department_id = d.id
-            WHERE t.department_id = u1.department_id AND t.assigned_to IS NULL 
-            AND u1.login = ? 
-        ");
-        $stmt->execute([$creatorName]);
+                 FROM tasks t
+                 LEFT JOIN users u1 ON t.created_by = u1.id
+                 LEFT JOIN departments d ON t.department_id = d.id
+                 WHERE t.department_id = ? AND t.assigned_to IS NULL";
+        $params = [];
+        $params[] = $department_id;
+        if(!empty($creatorName)){
+            $query.=" AND u1.login = ?";
+            $params[] = $creatorName;
+        }
+        if(!empty($title)){
+            $query.=" AND LOWER(t.title) LIKE LOWER(CONCAT('%',?,'%'))";
+            $params[] = $title;
+        }
+        if(!empty($descr)){
+            $query.=" AND LOWER(t.description) LIKE LOWER(CONCAT('%',?,'%'))";
+            $params[] = $descr;
+        }
+        $stmt = getConnection()->prepare($query);
+        $stmt->execute($params);
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    public static function trackTaskSearch($creatorName, $userId){
+    public static function trackTaskSearch($creatorName, $title, $descr, $userId){
         $conn = getConnection();
-        $stmt = $conn->prepare("
-            SELECT * FROM user_preferences WHERE user_id = ? AND managerName = ?
-        ");
-        $stmt->execute([$userId,$creatorName]);
-        if(sizeof($stmt->fetchAll(PDO::FETCH_OBJ))>0){
+        if(!empty($creatorName)){
             $stmt = $conn->prepare("
-                UPDATE user_preferences
-                SET managerName_count = managerName_count + 1
-                WHERE user_id = ? AND managerName=?
+                INSERT INTO user_preferences2 (user_id, column_name, query_str, quantity)
+                VALUES (?, 'creator', ?,1)
+                ON DUPLICATE KEY UPDATE
+                quantity = quantity+1;
             ");
-             $stmt->execute([$userId,$creatorName]);
+            $stmt->execute([$userId,$creatorName]);
         }
-        else{
+        if(!empty($title)){
             $stmt = $conn->prepare("
-                INSERT INTO user_preferences(user_id,managerName,managerName_count)
-                VALUES (?,?,?)
+                INSERT INTO user_preferences2 (user_id, column_name, query_str, quantity)
+                VALUES (?, 'taskTitle', ?,1)
+                ON DUPLICATE KEY UPDATE
+                quantity = quantity+1;
             ");
-             $stmt->execute([$userId,$creatorName,1]);
+            $stmt->execute([$userId,$title]);
         }
+        if(!empty($descr)){
+            $stmt = $conn->prepare("
+                INSERT INTO user_preferences2 (user_id, column_name, query_str, quantity)
+                VALUES (?, 'description', ?,1)
+                ON DUPLICATE KEY UPDATE
+                quantity = quantity+1;
+            ");
+            $stmt->execute([$userId,$descr]);
+        }
+        
     }
 
     // Выборка заданий по отделу, которые еще никто не взял с данными пользователей и отдела
     public static function getTasksByDepartmentWithoutAssignee($department_id, $userId) {
         $stmt = getConnection()->prepare("
-            SELECT t.*, 
-                   u1.login AS creator_login, 
-                   d.name AS department_name 
-            FROM tasks t
-            LEFT JOIN users u1 ON t.created_by = u1.id
-            LEFT JOIN departments d ON t.department_id = d.id
-            LEFT JOIN
-            (
-                SELECT managerName, managerName_count FROM user_preferences
-                WHERE user_id= ?
-            ) AS user_prefs ON user_prefs.managerName = u1.login
-            WHERE t.department_id = ? AND t.assigned_to IS NULL
-            ORDER BY managerName_count DESC
+            CALL GetTasks(?,?)
         ");
         $stmt->execute([$userId,$department_id]);
         return $stmt->fetchAll(PDO::FETCH_OBJ);

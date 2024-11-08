@@ -1,18 +1,29 @@
 <?php
     require_once "../Dao/TasksDao.php";
     require_once "../Utils/MySessionHandler.php";
+    require_once "../Utils/inputFilter.php";
+    require_once "../Utils/InputValidator.php";
 
 class GetTasksController{
 
     public static function selectTasksEmployee($department_id,$employee_id){
         try{
-            $manager = isset($_GET["managerName"]) && !empty($_GET["managerName"]) ? $_GET["managerName"] : null;
-            if(isset($manager)){
-                TaskDAO::trackTaskSearch($manager,$employee_id);
-                $_SESSION["department_waiting_tasks"]=TaskDAO::searchTasks($manager);
+            $manager = InputFilter::filterString("managerName");
+            $title = InputFilter::filterString("title");
+            $descr = InputFilter::filterString("descr");
+            if(empty($manager) && empty($title) && empty($descr)){
+                $_SESSION["department_waiting_tasks"]=TaskDAO::getTasksByDepartmentWithoutAssignee($department_id,$employee_id);
             }
             else{
-                $_SESSION["department_waiting_tasks"]=TaskDAO::getTasksByDepartmentWithoutAssignee($department_id,$employee_id);
+                if(InputValidator::hasSpecialCharacters($manager) || InputValidator::hasSpecialCharacters($title)
+                            || InputValidator::hasSpecialCharacters($descr)){
+                    MySessionHandler::addErrorMessage("спец-символы запрещены");
+                    $_SESSION["department_waiting_tasks"]=TaskDAO::getTasksByDepartmentWithoutAssignee($department_id,$employee_id);
+                }
+                else{
+                    TaskDAO::trackTaskSearch($manager,$title,$descr,$employee_id);
+                    $_SESSION["department_waiting_tasks"]=TaskDAO::searchTasks($department_id,$manager,$title,$descr);
+                }
             }
             $_SESSION["department_my_employeeTasks"]=TaskDAO::getTasksByAssignedUser($employee_id);
         }catch(Exception $ex){
@@ -33,21 +44,5 @@ class GetTasksController{
             MySessionHandler::addErrorMessage("Ошибка при выборке данных. ".$ex->getMessage());
         }
     }
-
-    //functions ------------------------------------------------------------
-    /*public static function searching(){
-        return isset($_GET["action"]) && $_GET["action"]=="search";
-    }
-    //admin
-    public static function selectAll($department_id){
-        try{
-            $selectedRows =  TaskDAO::selectAllRows($department_id);
-            $_SESSION["selectedRows"]=$selectedRows;
-        }
-        catch(Exception $ex){
-            MySessionHandler::addErrorMessage("Ошибка при выборке данных. ".$ex->getMessage());
-            return;
-        }
-    }*/
 }
 ?>

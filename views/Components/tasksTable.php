@@ -165,8 +165,10 @@ $managerNames = UsersController::getManagers($_SESSION["user"]->department_id)
         <?php foreach($managerNames as $name){?>
             <option value=<?php echo $name?>><?php echo $name?></option>
         <?php }?>
-            <option value="">Выбрать всех</option>
+            <option selected value="">Все начальники</option>
     </select>
+    <input type="text" class="form-control" name="title" id="formGroupExampleInput2" placeholder="Название задания">
+    <input type="text" class="form-control" name="descr" id="formGroupExampleInput2" placeholder="Описание задачи">
     <button type="submit" class="btn btn-primary">Поиск</button>
 </form>
 
