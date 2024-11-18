@@ -7,6 +7,7 @@
                             <a class="navbar-brand"><?php echo $_SESSION["user"]->login ?></a>
                             <a href="index.php" class="btn btn-primary">Главная страница</a>
                             <a href="tasksPage.php" class="btn btn-primary">Задания</a>
+                            <a href="userProfilePage.php" class="btn btn-primary">Профиль</a>
                             <?php 
                              if($_SESSION["user"]->role=="admin"){?>
                                 <a href="departmentsPage.php" class="btn btn-primary">Справочник отделов</a>

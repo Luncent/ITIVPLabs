@@ -13,7 +13,9 @@
 
         public static function getUser($login, $password){
             $conn = getConnection();
-            $query = $conn->prepare("SELECT * FROM users WHERE login=? AND password=?");
+            $query = $conn->prepare("SELECT users.*, departments.name AS department_name FROM users 
+            LEFT JOIN departments ON departments.id=users.department_id
+            WHERE users.login=? AND users.password = ?");
             $query->execute([$login, $password]);
             $users = $query->fetchAll(PDO::FETCH_OBJ);
             return $users;
@@ -38,6 +40,22 @@
             else{
                 return $users[0];
             }
+        }
+
+        public static function getPicture($uid){
+            $conn = getConnection();
+            $query = $conn->prepare("SELECT profile_pic FROM users WHERE id=?");
+            $query->execute([$uid]);
+            $picture = $query->fetchColumn();
+            return $picture;
+        }
+
+        public static function setPicture($uid, $bytes){
+            $conn = getConnection();
+            $query = $conn->prepare("UPDATE users SET profile_pic =:bytes WHERE id=:user_id");
+            $query->bindParam(":bytes",$bytes, PDO::PARAM_LOB);
+            $query->bindParam(":user_id",$uid);
+            $query->execute();
         }
     }
 ?>
