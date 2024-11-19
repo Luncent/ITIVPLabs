@@ -7,11 +7,11 @@
     function getBio($userName){
         try{
             $filePath = "../files/".$userName."/bio.txt";
-            if (!is_readable($filePath)) {
-                MySessionHandler::addErrorMessage("Ошибка при выборе биографии. Ошибка доступа");
-                return;
-            }
             if(!file_exists($filePath)){
+                if (!is_readable($filePath)) {
+                    MySessionHandler::addErrorMessage("Файл с биографией не найден или к нему отсутствует доступ");
+                    return "Биография отсутствует";
+                }
                 return "Биография отсутствует";
             }
             $fileContent = file_get_contents($filePath);

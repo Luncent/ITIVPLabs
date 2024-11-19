@@ -37,7 +37,6 @@
     <div class="container">
         <!-- Профиль заголовка -->
         <div class="profile-header">
-            <!-- Изображение пользователя  <img src="data:image/jpeg;base64,' . $base64Image . '" alt="Image">-->
             <?php if(!isset($_SESSION["profile_picture"]) || !$_SESSION["profile_picture"]){
                 echo '<img src="../img/blank_profile.png" alt="Изображение пользователя">';
             } else {
@@ -58,7 +57,6 @@
 
         <div class="forms">
             <div class="pictureChange">
-                <!-- Кнопка для редактирования фото профиля -->
                 <form class="section" action="../Controlers/setUserPicture.php" method="POST" enctype="multipart/form-data">
                     <label for="fileToUpload">Выберите изображение:</label>
                     <input type="file" class="form-control" name="profile_picture" id="formGroupExampleInput2" name="profile_picture">
@@ -67,7 +65,6 @@
                 </form>
             </div>
             <div class="pictureChange">
-                <!-- Кнопка для редактирования биографии профиля -->
                 <form class="section" action="../Controlers/setUserBio.php" method="POST" enctype="multipart/form-data">
                     <label for="fileToUpload">Выберите файл с биографией:</label>
                     <input type="file" class="form-control" name="fileWithBio" id="formGroupExampleInput2" name="profile_picture">

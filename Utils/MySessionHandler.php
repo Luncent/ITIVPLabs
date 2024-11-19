@@ -1,9 +1,15 @@
 <?php 
 
     Class MySessionHandler{
+
         public static function addErrorMessage($message){
             self::safeSessionStart();
-            $_SESSION["message"]=$message;
+            if(!isset($_SESSION["message"]) || empty($_SESSION["message"])){
+                $_SESSION["message"]="! ".$message;
+            }
+            else{
+                $_SESSION["message"].="<br>! ".$message;
+            }
         }
 
         public static function safeSessionStart(){
