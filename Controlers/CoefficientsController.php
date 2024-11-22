@@ -31,6 +31,10 @@ class CoefficientsController{
                 MySessionHandler::addErrorMessage("Ошибка при обновлении записи. "."Число должно состоять из 5 цифр и иметь не более 2 знаков после запятой");
                 return;  
            }
+           else if($weight<0 || $weight>10){
+                MySessionHandler::addErrorMessage("Ошибка при обновлении записи. "."Значение коэффициента должно находиться в диапазоне от 0 до 10");
+                return; 
+           }
            else{
                 $dao = new CoefficentsDao();
                 $dao->update($id,$weight);
