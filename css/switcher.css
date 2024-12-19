@@ -1,0 +1,54 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 50px;
+}
+
+h2 {
+    margin-bottom: 30px;
+}
+
+/* Обёртка для текста и переключателя */
+.switch-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Контейнер переключателя */
+.toggle-container {
+    width: 200px;
+    height: 60px;
+    background-color: #ddd;
+    border-radius: 30px;
+    position: relative;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.2);
+}
+
+/* Круглый элемент */
+.toggle-circle {
+    width: 50px;
+    height: 50px;
+    background-color: #007bff;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+}
+
+/* Текст состояний */
+.state {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    user-select: none;
+}
+
+#warningMessage {
+    color: red;
+    display: none; /* Скрываем сообщение по умолчанию */
+}

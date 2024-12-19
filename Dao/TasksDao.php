@@ -27,10 +27,10 @@ class TaskDAO {
         return $stmt->execute([$description, $taskId]);
     }
 
-    public static function assignTaskToUser($taskId, $userId) {
+    public static function assignTaskToUser($taskId, $userId, $status) {
         $stmt = getConnection()->prepare("
             UPDATE tasks 
-            SET assigned_to = ?, status = 'Выполняется', updated_at = NOW() 
+            SET assigned_to = ?, status = '$status. Выполняется', updated_at = NOW() 
             WHERE id = ?
         ");
         return $stmt->execute([$userId, $taskId]);

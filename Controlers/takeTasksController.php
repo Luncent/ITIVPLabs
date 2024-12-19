@@ -4,6 +4,7 @@
 
     $taskId = $_POST["taskId"];
     $userId = $_POST["userId"];
+    $status = $_COOKIE["work_mode"] === 'remote' ? 'На удалёнку' : 'Работа в офисе';
 
     try{
         if(TaskDAO::getTaskById($taskId)->assignee_login!=null){
@@ -12,7 +13,7 @@
             return;
         }
         else{
-            TaskDAO::assignTaskToUser($taskId, $userId);
+            TaskDAO::assignTaskToUser($taskId, $userId,$status);
             MySessionHandler::addErrorMessage("Задание взято");
             header("Location: ../views/tasksPage.php");
             return;

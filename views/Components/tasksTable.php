@@ -98,6 +98,7 @@
 
 <?php 
     if($_SESSION["user"]->role == "сотрудник"){
+        require_once "switcher.php"
 ?>
 <div class="modal" id="myModal" tabindex="-1">
     <div class="modal-dialog">
@@ -112,7 +113,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal" id="closeModal">Close</button>
-            <button type="submit" class="btn btn-primary">Save changes</button>
+            <button type="submit" class="btn btn-primary updateButtonModal <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Save changes</button>
         </div>
         </div>
         </form>
@@ -146,7 +147,7 @@
                     <form action="../Controlers/takeTasksController.php" method="post">
                         <input type="hidden" name="taskId" value="<?php echo $task->id?>">
                         <input type="hidden" name="userId" value="<?php echo $_SESSION["user"]->id?>">
-                        <button type="submit" class="btn btn-primary" name="изменить">Взять</button>
+                        <button type="submit" id="taskButton" class="btn btn-primary taskButton <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>" name="изменить" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Взять</button>
                     </form>
                     </td>
                 </tr>
@@ -199,10 +200,10 @@ $managerNames = UsersController::getManagers($_SESSION["user"]->department_id)
                     <td><?php echo $task->updated_at?></td>
                     <td><textarea readonly rows="3" type="text" name="status" ><?php echo $task->status?></textarea></td>
                     <td>
-                        <button type="button" class="btn btn-primary openModal"
+                    <button type="button" class="btn btn-primary openModal updateButtonTask <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>"
                         data-id="<?php echo $task->id?>"
                         data-title="<?php echo $task->title?>"
-                        data-status="<?php echo $task->status?>">Изменить</button>
+                        data-status="<?php echo $task->status?>" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Изменить</button>
                     </td>
                 </tr>
             <?php }?>
@@ -210,4 +211,5 @@ $managerNames = UsersController::getManagers($_SESSION["user"]->department_id)
     </tbody>
 </table>
 <script src="../js/editTaskStatus.js"></script>  
+<script src="../js/switcher.js"></script>  
 <?php } ?>
