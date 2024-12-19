@@ -36,7 +36,7 @@ try{
         $allowedType = 'text/plain';
         $fileType = mime_content_type($file['tmp_name']);
         if ($fileType!== $allowedType){
-            MySessionHandler::addErrorMessage("Недопустимый формат изображения. Разрешены только txt.");
+            MySessionHandler::addErrorMessage("Недопустимый формат биографии. Разрешены только txt.");
             header("Location: ../views/userProfilePage.php");
             return;
         }   
