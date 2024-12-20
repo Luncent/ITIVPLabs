@@ -6,7 +6,11 @@
         <div class="state">В офисе</div>
         <div class="toggle-container">
             <div id="toggleCircle" class="toggle-circle" 
-                 style="left: <?php echo isset($_COOKIE['work_mode']) ? $_COOKIE['work_mode'] == 'remote' ? '145px' : '145px' : '5px'; ?>;"></div>
+                 style="left: <?php if(isset($_COOKIE[$_SESSION["user"]->login]))
+                  { 
+                    if ($_COOKIE[$_SESSION["user"]->login] == 'remote') echo'145px';
+                    else { echo '5px';}
+                  } ?>;"></div>
         </div>
         <div class="state">Удалёнка</div>
     </div>

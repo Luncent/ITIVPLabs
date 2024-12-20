@@ -4,8 +4,8 @@
 
     $taskId = $_POST["taskId"];
     $userId = $_POST["userId"];
-    $status = $_COOKIE["work_mode"] === 'remote' ? 'На удалёнку' : 'Работа в офисе';
-
+    $userLogin = $_POST["userLogin"];
+    $status = $_COOKIE[$userLogin] == 'remote' ? 'На удалёнку' : 'Работа в офисе';
     try{
         if(TaskDAO::getTaskById($taskId)->assignee_login!=null){
             MySessionHandler::addErrorMessage("Задание уже взято");

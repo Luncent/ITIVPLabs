@@ -113,7 +113,7 @@
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-secondary closeModal" data-bs-dismiss="modal" id="closeModal">Close</button>
-            <button type="submit" class="btn btn-primary updateButtonModal <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Save changes</button>
+            <button type="submit" class="btn btn-primary updateButtonModal <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>" <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>>Save changes</button>
         </div>
         </div>
         </form>
@@ -147,7 +147,8 @@
                     <form action="../Controlers/takeTasksController.php" method="post">
                         <input type="hidden" name="taskId" value="<?php echo $task->id?>">
                         <input type="hidden" name="userId" value="<?php echo $_SESSION["user"]->id?>">
-                        <button type="submit" id="taskButton" class="btn btn-primary taskButton <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>" name="изменить" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Взять</button>
+                        <input type="hidden" name="userLogin" value="<?php echo $_SESSION["user"]->login?>">
+                        <button type="submit" id="taskButton" class="btn btn-primary taskButton <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>" name="изменить" <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>>Взять</button>
                     </form>
                     </td>
                 </tr>
@@ -200,10 +201,10 @@ $managerNames = UsersController::getManagers($_SESSION["user"]->department_id)
                     <td><?php echo $task->updated_at?></td>
                     <td><textarea readonly rows="3" type="text" name="status" ><?php echo $task->status?></textarea></td>
                     <td>
-                    <button type="button" class="btn btn-primary openModal updateButtonTask <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>"
+                    <button type="button" class="btn btn-primary openModal updateButtonTask <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>"
                         data-id="<?php echo $task->id?>"
                         data-title="<?php echo $task->title?>"
-                        data-status="<?php echo $task->status?>" <?php echo isset($_COOKIE['work_mode']) ? '' : 'disabled'; ?>>Изменить</button>
+                        data-status="<?php echo $task->status?>" <?php echo isset($_COOKIE[$_SESSION["user"]->login]) ? '' : 'disabled'; ?>>Изменить</button>
                     </td>
                 </tr>
             <?php }?>

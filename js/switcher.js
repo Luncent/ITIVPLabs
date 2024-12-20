@@ -3,13 +3,11 @@ const taskButtons = document.querySelectorAll('.taskButton');
 const updateButtonTasks = document.querySelectorAll('.updateButtonTask');
 const updateButtonModals = document.querySelectorAll('.updateButtonModal');
 const warningMessage = document.getElementById('warningMessage');
-
-let isRemote = "<?php  $_COOKIE['work_mode'] == 'remote' ? 'true' : 'false'; ?>";
+const login = document.getElementById("login").textContent;
 
 // Функция для установки cookie
-function setCookie(name, value, days) {
-    const expires = new Date(Date.now() + days * 86400 * 1000).toUTCString();
-    document.cookie = `${name}=${value}; expires=${expires}; path=/`;
+function setCookie(value) {
+    document.cookie = `${login}=${value}; max-age=604800;  path=/`;
 }
 
 // Функция для получения cookie
@@ -22,9 +20,12 @@ function getCookie(name) {
     return cookies[name];
 }
 
+let isRemote = getCookie(login) == 'remote' ? 'true' : 'false';
+
+
 // Проверка cookie при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-    if (!getCookie('work_mode')) {
+    if (!getCookie(login)) {
         showWarning();
     }
 });
@@ -33,11 +34,11 @@ document.addEventListener('DOMContentLoaded', () => {
 toggleCircle.addEventListener('click', () => {
     if (isRemote === 'true') {
         toggleCircle.style.left = '5px';
-        setCookie('work_mode', 'office', 30);
+        setCookie('office');
         isRemote = 'false';
     } else {
         toggleCircle.style.left = '145px';
-        setCookie('work_mode', 'remote', 30);
+        setCookie('remote');
         isRemote = 'true';
     }
 
@@ -47,7 +48,7 @@ toggleCircle.addEventListener('click', () => {
 
 // Постоянная проверка наличия cookie
 setInterval(() => {
-    if (!getCookie('work_mode')) {
+    if (!getCookie(login)) {
         showWarning();
     }
 }, 1000);
@@ -73,7 +74,7 @@ function showWarning() {
 
 // Функция скрытия предупреждения
 function hideWarning() {
-    warningMessage.textContent = 'none';
+    warningMessage.style.display = 'none';
     taskButtons.forEach((button) => {
         button.classList.remove('disabled');
         button.disabled = false;
