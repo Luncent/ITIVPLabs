@@ -95,3 +95,18 @@ body {
     width: 100%;
     margin-bottom: 10px;
 }
+
+.phpError{
+    margin-top: 5px;
+    border: 2px solid red;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.phpError p{
+    margin: 0 auto;
+    color: red;
+    margin-bottom: 5px;
+}

@@ -6,8 +6,11 @@ require_once "../Utils/inputFilter.php";
 require_once "../Utils/InputValidator.php";
 // Указываем директорию для сохранения файла
 
-$uploadDir = "../files/".$_POST["userName"];
+$uploadDir = "../files/".@$_POST["userName"];
 $fileParamName = "fileWithBio";
+
+header('Content-Type: application/json');
+
 try{
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0777, true);
@@ -20,43 +23,63 @@ try{
     
         // Проверка ошибок загрузки
         if ($file['error'] !== UPLOAD_ERR_OK) {
-            MySessionHandler::addErrorMessage("Ошибка загрузки файла! Код ошибки: " . $file['error']);
-            header("Location: ../views/userProfilePage.php");
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Ошибка загрузки файла! Код ошибки: " . $file['error'],
+            ]);
             return;
         }
 
         // Проверка размера файла (например, до 4КB)
         $fileSizeLimit= 4 * 1024;
         if ($file['size'] > $fileSizeLimit) {
-            MySessionHandler::addErrorMessage("Ошибка: файл слишком большой. Максимальный размер ". ($fileSizeLimit/1024)." КВ.");
-            header("Location: ../views/userProfilePage.php");
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Ошибка: файл слишком большой. Максимальный размер " . ($fileSizeLimit / 1024) . " КБ.",
+            ]);
             return;
         }
 
         $allowedType = 'text/plain';
         $fileType = mime_content_type($file['tmp_name']);
         if ($fileType!== $allowedType){
-            MySessionHandler::addErrorMessage("Недопустимый формат биографии. Разрешены только txt.");
-            header("Location: ../views/userProfilePage.php");
+            http_response_code(400);
+            echo json_encode([
+                "success" => false,
+                "message" => "Недопустимый формат файла. Разрешены только txt.",
+            ]);
             return;
         }   
 
         // Перемещаем файл в целевую директорию
-        if (move_uploaded_file($file['tmp_name'], $filePath)) {
-            MySessionHandler::addErrorMessage("Файл успешно загружен");
+        if (@move_uploaded_file($file['tmp_name'], $filePath)) {
+            http_response_code(200);
+            echo json_encode([
+                "success" => true,
+                "message" => "Файл успешно загружен.",
+            ]);
         } else {
-            MySessionHandler::addErrorMessage("Ошибка при перемещении файла.");
+            http_response_code(500);
+            echo json_encode([
+                "success" => false,
+                "message" => "Ошибка при сохнанении файла. Проверьте настройки доступа",
+            ]);
         }
-        header("Location: ../views/userProfilePage.php");
         return;
     } else {    
-        MySessionHandler::addErrorMessage("Файл не выбран");
-        header("Location: ../views/userProfilePage.php");
-        return;
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Файл не выбран.",
+        ]);
     }   
 }catch(Exception $ex){
-    MySessionHandler::addErrorMessage("Ошибка при сохранении файла ". $ex->getMessage());
-    header("Location: ../views/userProfilePage.php");
-    return;
+    http_response_code(500);
+    echo json_encode([
+        "success" => false,
+        "message" => "Ошибка при сохранении файла: " . $ex->getMessage(),
+    ]);
 }
 ?>

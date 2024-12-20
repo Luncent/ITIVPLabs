@@ -26,19 +26,25 @@
     <?php 
         require_once "../views/Components/indexPageHeader.php"
     ?>
-<!--ErrorMessage component-->
+    <!--ErrorMessage component-->
     <?php
         if(isset($message)){
-            echo '<div class="phpError"><p>'. $message.'</p></div>';
+            echo '<div id="errorMsg" class="phpError"><p>'. $message.'</p></div>';
             unset($message);
         }
+        else{
+            echo '<div id="errorMsg" class="phpError" style="display: none;">
+                        <p>Произошла ошибка!</p>
+                  </div>';
+        }
     ?>
+    
 
     <div class="container">
         <!-- Профиль заголовка -->
         <div class="profile-header">
             <?php if(!isset($_SESSION["profile_picture"]) || !$_SESSION["profile_picture"]){
-                echo '<img src="../img/blank_profile.png" alt="Изображение пользователя">';
+                echo '<img src="../img/blank_profile.png" alt="    Аватар">';
             } else {
                 echo '<img src="data:image/jpeg;base64,' . $_SESSION["profile_picture"] . '" alt="Image">';
             }?>
@@ -57,17 +63,17 @@
 
         <div class="forms">
             <div class="pictureChange">
-                <form class="section" action="../Controlers/setUserPicture.php" method="POST" enctype="multipart/form-data">
+                <form id="profilePictureForm" class="section" action="../Controlers/setUserPicture.php" method="POST" enctype="multipart/form-data">
                     <label for="fileToUpload">Выберите изображение:</label>
-                    <input type="file" class="form-control" name="profile_picture" id="formGroupExampleInput2" name="profile_picture">
+                    <input type="file" class="form-control" name="profile_picture" id="pictureFile" name="profile_picture">
                     <input type="hidden" name="uid" value=<?php echo $_SESSION["user"]->id?>>
                     <button type="submit" class="btn">Изменить фото профиля</button>
                 </form>
             </div>
             <div class="pictureChange">
-                <form class="section" action="../Controlers/setUserBio.php" method="POST" enctype="multipart/form-data">
+                <form id="bioForm" class="section" action="../Controlers/setUserBio.php" method="POST" enctype="multipart/form-data">
                     <label for="fileToUpload">Выберите файл с биографией:</label>
-                    <input type="file" class="form-control" name="fileWithBio" id="formGroupExampleInput2" name="profile_picture">
+                    <input type="file" class="form-control" name="fileWithBio" id="bioFile" name="profile_picture">
                     <input type="hidden" name="uid" value=<?php echo $_SESSION["user"]->id?>>
                     <input type="hidden" name="userName" value=<?php echo $_SESSION["user"]->login?>>
                     <button type="submit" class="btn">Изменить биографию</button>
@@ -75,6 +81,6 @@
             </div>
         </div>
     </div>
-
+    <script src="../js/userProfile.js"></script>  
 </body>
 </html>

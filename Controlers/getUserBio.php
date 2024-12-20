@@ -5,6 +5,7 @@
     require_once "../Utils/InputValidator.php";
 
     function getBio($userName){
+        $fileSizeLimit= 4 * 1024;
         try{
             $filePath = "../files/".$userName."/bio.txt";
             if(!file_exists($filePath)){
@@ -14,10 +15,19 @@
                 }
                 return "Биография отсутствует";
             }
-            $fileContent = file_get_contents($filePath);
+            $size = filesize($filePath);
+            if($size>$fileSizeLimit){
+                MySessionHandler::addErrorMessage("Размер файла с биографией слишком большой. Выберите другой файл");
+                return "Биография отсутствует";
+            }
+            $fileContent = @file_get_contents($filePath);
+            if($fileContent==false){
+                MySessionHandler::addErrorMessage("Ошибка при выборе биографии. Доступ запрещен");
+                return "Биография отсутствует";
+            }
             return nl2br(htmlspecialchars($fileContent));
         }catch(Exception $ex){
-            MySessionHandler::addErrorMessage("Ошибка при выборке биографии. ".$ex->getMessage());
+            MySessionHandler::addErrorMessage("Ошибка при выборе биографии. ".$ex->getMessage());
         }
     }
 ?>

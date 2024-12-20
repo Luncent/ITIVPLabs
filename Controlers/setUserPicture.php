@@ -7,44 +7,64 @@
     $fileParamName='profile_picture';
     $tempFileName = 'tmp_name';
 
+    header('Content-Type: application/json');
+
     if(!isset($_FILES[$fileParamName]) || $_FILES[$fileParamName]["size"]==0){
-        MySessionHandler::addErrorMessage("Картинка не выбрана");
-        header("Location: ../views/userProfilePage.php");
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Картинка не выбрана",
+        ]);
         return;
     }
     $file = $_FILES[$fileParamName];
     // Проверка на ошибки загрузки
     if ($file['error'] !== UPLOAD_ERR_OK) {
-        MySessionHandler::addErrorMessage("Ошибка загрузки файла. Код ошибки: " . $file['error']);
-        header("Location: ../views/userProfilePage.php");
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Ошибка загрузки файла. Код ошибки: " . $file['error'],
+        ]);
         return;
     }
     $maxSize = 512 * 1024;  // 512 КB
     if ($file['size'] > $maxSize) {
-        MySessionHandler::addErrorMessage("Файл слишком большой. Максимальный размер: ". ($maxSize/1024)."КБ");
-        header("Location: ../views/userProfilePage.php");
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Файл слишком большой. Максимальный размер: ". ($maxSize/1024)."КБ",
+        ]);
         return;
     }
     // Проверка формата изображения
-    $allowedTypes = ['image/jpeg', 'image/png'];
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
     $fileType = mime_content_type($file[$tempFileName]);
+    error_log("Определённый MIME-тип: " . $fileType);
     if (!in_array($fileType, $allowedTypes)) {
-        MySessionHandler::addErrorMessage("Недопустимый формат изображения. Разрешены только JPG, PNG.");
-        header("Location: ../views/userProfilePage.php");
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "message" => "Недопустимый формат изображения. Разрешены только JPG, JPEG, PNG, IMAGE/WEBP.",
+        ]);
         return;
     }
     // Если все проверки прошли, сохраняем файл на сервер
     $uid = InputFilter::filterPost("uid");
     try{
-
         $bytes = file_get_contents($file[$tempFileName]);
-        //false if picture not exists
-        UserDAO::setPicture($uid, $bytes);
-        header("Location: ../views/userProfilePage.php");
+        @UserDAO::setPicture($uid, $bytes);
+        http_response_code(200);
+        echo json_encode([
+            "success" => true,
+            "message" => "Файл сохранен",
+        ]);
         return;
     }catch(Exception $ex){
-        MySessionHandler::addErrorMessage("Ошибка при выборке изображения. ".$ex->getMessage());
-        header("Location: ../views/userProfilePage.php");
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "message" => "Ошибка при выборке изображения. ".$ex->getMessage(),
+        ]);
         return;
     }
 ?>
