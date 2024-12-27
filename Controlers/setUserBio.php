@@ -52,7 +52,6 @@ try{
             ]);
             return;
         }   
-
         if(!is_readable($uploadDir)){
             http_response_code(500);
             echo json_encode([
@@ -70,6 +69,7 @@ try{
             ]);
         } else {
             http_response_code(500);
+            error_log("Ошибка 500 доступ запрещ0");
             echo json_encode([
                 "success" => false,
                 "message" => "Ошибка при сохнанении файла. Проверьте настройки доступа",
