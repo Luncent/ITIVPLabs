@@ -8,16 +8,24 @@ if(empty($_POST["status"])){
     header("Location: ../views/tasksPage.php");
     return;
 }
-if(InputValidator::correctDescription($_POST["status"])){
-    MySessionHandler::addErrorMessage("Использованы недопустимые символы");
-    header("Location: ../views/tasksPage.php");
-    return;
-}
+// if(InputValidator::correctDescription($_POST["status"])){
+//     MySessionHandler::addErrorMessage("Использованы недопустимые символы");
+//     header("Location: ../views/tasksPage.php");
+//     return;
+// }
+$userLogin = $_POST["userLogin"];
+// if(!isset($_COOKIE[$userLogin]))
+// {
+//     MySessionHandler::addErrorMessage("Не выбран режим работы");
+//     header("Location: ../views/tasksPage.php");
+//     return;
+// }
 //проверка наличия расписания и обновление
 try{
     $taskId = $_POST["taskId"];
     $status = trim($_POST["status"]);
-    
+    // var_dump($taskId);
+    // die;
     TaskDAO::updateTaskStatus($taskId, $status);
     MySessionHandler::addErrorMessage("Запись обновлена");
 }

@@ -14,7 +14,9 @@
 
         public static function safeSessionStart(){
             if (!(session_status() === PHP_SESSION_ACTIVE)) {
-                session_start();
+                session_start([
+                    'cookie_lifetime' => 60*30,
+                ]);
             }
         }   
 

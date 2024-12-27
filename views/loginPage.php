@@ -14,7 +14,7 @@
 <body>
 <div class="page">
     <form action="../Controlers/LoginControler.php" method="post" class="formLogin">
-    <input type="hidden" name="action" value="login">
+        <input type="hidden" name="action" value="login">
         <div class="mb-3">
             <input type="text" name="login" placeholder="Login">
         </div>
