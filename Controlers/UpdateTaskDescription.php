@@ -15,8 +15,8 @@ if(InputValidator::correctDescription($_POST["description"])){
 }
 //проверка наличия расписания и обновление
 try{
-    $taskId = $_POST["taskId"];
-    $description = $_POST["description"];
+    $taskId = htmlspecialchars($_POST["taskId"]);
+    $description = htmlspecialchars($_POST["description"]);
     
     TaskDAO::updateTaskDescription($taskId, trim($description));
     MySessionHandler::addErrorMessage("Запись обновлена");

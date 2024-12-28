@@ -3,8 +3,8 @@
     require_once "../Dao/UserDao.php";
     MySessionHandler::safeSessionStart();
 
-    $login = $_POST["login"];
-    $password = $_POST["password"];
+    $login = htmlspecialchars($_POST["login"]);
+    $password = htmlspecialchars($_POST["password"]);
     if(empty($login) || empty($password)){
         MySessionHandler::addErrorMessage("Заполните все поля");
         header("Location: ../views/loginPage.php");
@@ -20,7 +20,7 @@
             return;
         }
         else{
-            MySessionHandler::addErrorMessage("Неверный логин или пароль");
+            MySessionHandler::addErrorMessage("Неверный логин $login или неправильный пароль");
             header("Location: ../views/loginPage.php");
             return;
         }

@@ -32,7 +32,7 @@
         </div>
     </form>
 
-    <?php if (isset($_COOKIE[$_SESSION["user"]->login])): ?>
+    <?php if (isset($_COOKIE[$_SESSION["user"]->login]) && (password_verify('remote',$_COOKIE[$_SESSION["user"]->login]) || password_verify('office',$_COOKIE[$_SESSION["user"]->login]))): ?>
         <p >Текущий статус: <?php echo password_verify('office',$_COOKIE[$_SESSION["user"]->login]) == true ? 'office' : 'remote';?></p>
     <?php else: ?>
         <p style="color: red;">Чтобы выбрать задание, необходимо указать режим работы.</p>

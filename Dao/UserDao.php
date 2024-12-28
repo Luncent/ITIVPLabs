@@ -15,8 +15,8 @@
             $conn = getConnection();
             $query = $conn->prepare("SELECT users.*, departments.name AS department_name FROM users 
             LEFT JOIN departments ON departments.id=users.department_id
-            WHERE users.login='$login' AND users.password = '$password'");
-            $query->execute();
+            WHERE users.login=? AND users.password = ?");
+            $query->execute([$login,$password]);
             $users = $query->fetchAll(PDO::FETCH_OBJ);
             return $users;
         }

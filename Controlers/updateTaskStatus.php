@@ -13,17 +13,23 @@ if(empty($_POST["status"])){
 //     header("Location: ../views/tasksPage.php");
 //     return;
 // }
-$userLogin = $_POST["userLogin"];
-// if(!isset($_COOKIE[$userLogin]))
-// {
-//     MySessionHandler::addErrorMessage("Не выбран режим работы");
-//     header("Location: ../views/tasksPage.php");
-//     return;
-// }
+$userLogin = htmlspecialchars($_POST["userLogin"]);
+if(!isset($_COOKIE[$userLogin]))
+{
+    MySessionHandler::addErrorMessage("Не выбран режим работы");
+    header("Location: ../views/tasksPage.php");
+    return;
+}
+else if(!password_verify('remote',$_COOKIE[$userLogin]) && !password_verify('office',$_COOKIE[$userLogin]))
+{
+    MySessionHandler::addErrorMessage("Не выбран режим работы");
+    header("Location: ../views/tasksPage.php");
+    return;
+}
 //проверка наличия расписания и обновление
 try{
-    $taskId = $_POST["taskId"];
-    $status = trim($_POST["status"]);
+    $taskId = htmlspecialchars($_POST["taskId"]);
+    $status = trim(htmlspecialchars($_POST["status"]));
     // var_dump($taskId);
     // die;
     TaskDAO::updateTaskStatus($taskId, $status);
